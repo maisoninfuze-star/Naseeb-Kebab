@@ -167,7 +167,7 @@ export const MENU: MenuItem[] = [
     id: 'banjan-burani-entree', category: 'entrees',
     nameFr: 'Banjan Burani', nameEn: 'Banjan Burani',
     descFr: null, descEn: null, price: 8.8,
-    image: 'DSC09504', imageConfidence: 'high',
+    image: 'rice-banjan-burani', imageConfidence: 'high',
     altImages: ['DSC09504', 'DSC09505', 'DSC09507'],
     available: true, featured: false, vegetarian: true, order: 4,
   },
@@ -404,7 +404,7 @@ export const MENU: MenuItem[] = [
     id: 'banjan-burani-plat', category: 'currys',
     nameFr: 'Banjan Burani', nameEn: 'Banjan Burani',
     descFr: null, descEn: null, price: 17.6,
-    image: 'DSC09504', imageConfidence: 'high',
+    image: 'rice-banjan-burani', imageConfidence: 'high',
     altImages: ['DSC09504', 'DSC09505', 'DSC09507'],
     available: true, featured: false, vegetarian: true, order: 6,
   },
@@ -447,23 +447,24 @@ export const MENU: MenuItem[] = [
     descEn:
       'Combo for 2: chicken kabab, beef kobidah, lamb tikka kabab and chicken kobidah. Served with rice and salad.',
     price: 51.7,
-    image: 'DSC09483', imageConfidence: 'high',
+    image: 'rice-combo-dostan', imageConfidence: 'high',
     available: true, featured: true, order: 1,
   },
   {
     id: 'combo-naseeb', category: 'partager',
     nameFr: 'Naseeb Combo', nameEn: 'Naseeb Combo',
     descFr: null, descEn: null, price: 104.5,
-    image: 'DSC09433', imageConfidence: 'high',
+    image: 'rice-combo-naseeb', imageConfidence: 'high',
     available: true, featured: true, order: 2,
   },
   {
     id: 'combo-watan', category: 'partager',
     nameFr: 'Watan Combo', nameEn: 'Watan Combo',
     descFr: null, descEn: null, price: 161.7,
-    image: 'card-combo-watan', imageConfidence: 'medium',
+    image: 'rice-combo-watan', imageConfidence: 'high',
     available: true, featured: true, order: 3,
-    needsReview: 'Photo réelle à venir (WhatsApp du propriétaire). Image actuelle = carte générée, provisoire.',
+    needsReview:
+      'Owner-supplied styled image (teal platter + rice bowl). Contents still unpublished — confirm before listing them.',
   },
 
   // ────────────────────── BURGERS ET WRAPS ──────────────────────

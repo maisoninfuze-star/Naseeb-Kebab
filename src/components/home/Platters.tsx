@@ -85,7 +85,7 @@ export default function Platters({ locale }: { locale: Locale }) {
       <div className="mt-8 flex justify-center">
         <div ref={frame} className="relative overflow-hidden" style={{ width: '38%' }}>
           <Picture
-            id="DSC09453"
+            id="rice-combo-watan"
             crop="wide"
             alt={
               locale === 'fr'
