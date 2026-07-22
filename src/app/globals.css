@@ -1,26 +1,284 @@
-@import "tailwindcss";
+@import 'tailwindcss';
+
+/* ══════════════════════════════════════════════════════════════════
+   NASEEB KABAB — DESIGN TOKENS  ·  v2 "quiet luxury"
+   ══════════════════════════════════════════════════════════════════
+   What changed from v1 and why:
+
+   The first pass read as fast-food, and the cause was one thing above
+   all others: large SOLID ORANGE fills. Saturated orange at button
+   scale is the single strongest fast-food signal in the visual
+   language of restaurants — it is what every quick-service brand on
+   earth uses.
+
+   So orange is demoted. It now appears only as hairlines, the flame,
+   active-state markers and the focus ring. Never as a fill larger
+   than a few pixels. The buttons became cream outlines.
+
+   Its job — warmth, richness, "this costs money" — is taken over by
+   COPPER and BRASS, lifted from the reference photography's props.
+   Copper reads expensive where orange reads cheap, because copper is
+   a material and orange is a colour.
+
+   The plates are teal (verdigris) and that is what the restaurant
+   actually serves on. Rather than fight it, teal is now a named part
+   of the system: against warm black with copper, teal reads as a
+   jewel. That is a more distinctive palette than the orange-on-black
+   of the reference, and it has the advantage of being true.
+   ══════════════════════════════════════════════════════════════════ */
+@theme {
+  /* Ground — deeper and less brown than v1 */
+  --color-obsidian: #0b0b0b;
+  --color-charcoal: #131110;
+  --color-smoked: #211b17;
+
+  /* Metals — these carry the luxury now */
+  --color-copper: #b08d57;
+  --color-brass: #caa96a;
+  --color-copper-deep: #7d6136;
+
+  /* Paper */
+  --color-cream: #f4ede2;
+  --color-sand: #cbb99e;
+  --color-sand-dim: #8d8171;
+
+  /* The plate, as a deliberate accent */
+  --color-verdigris: #4a6b6b;
+
+  /* Fire — now strictly an accent, never a fill */
+  --color-ember: #f15a24;
+  --color-ember-deep: #c9431a;
+
+  --color-herb: #52604b;
+
+  /* Type — Cormorant Garamond earns the display role: very high
+     stroke contrast, which is what reads as "editorial" at 8rem and
+     which Instrument Serif does not have. */
+  --font-display: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  --font-body: var(--font-manrope), 'Manrope', system-ui, sans-serif;
+
+  /* Scale — pushed harder. Luxury lives in the CONTRAST between a
+     very large display and very small, wide-tracked supporting text. */
+  --text-colossal: clamp(3.6rem, 13vw, 13rem);
+  --text-mega: clamp(3rem, 9vw, 8.5rem);
+  --text-display: clamp(2.4rem, 6vw, 5.5rem);
+  --text-title: clamp(1.9rem, 3.8vw, 3.4rem);
+  --text-heading: clamp(1.35rem, 2.2vw, 2rem);
+  --text-lede: clamp(1rem, 1.35vw, 1.25rem);
+
+  --ease-naseeb: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Rhythm — roughly 40% more air than v1. Whitespace is the cheapest
+     luxury signal there is and the one most often cut. */
+  --gutter: clamp(1.5rem, 6vw, 8rem);
+  --section-y: clamp(7rem, 18vh, 16rem);
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --line-dark: rgba(244, 237, 226, 0.11);
+  --line-light: rgba(19, 17, 16, 0.13);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Base ─────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+  }
+
+  body {
+    background: var(--color-obsidian);
+    color: var(--color-cream);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    line-height: 1.7;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  /* Cormorant runs small and light for its point size, so display type
+     needs a touch more weight than the 300 body to hold its colour. */
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 300;
+    line-height: 1.02;
+    letter-spacing: -0.014em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  :focus-visible {
+    outline: 1px solid var(--color-ember);
+    outline-offset: 4px;
+  }
+
+  ::selection {
+    background: var(--color-copper);
+    color: var(--color-obsidian);
+  }
+
+  input, textarea, select, button { font: inherit; color: inherit; }
+  img { max-width: 100%; height: auto; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── Utilities ────────────────────────────────────────────────── */
+@utility gutter {
+  padding-inline: var(--gutter);
+}
+
+@utility section-pad {
+  padding-block: var(--section-y);
+}
+
+/** The recurring label. Wider tracking and lighter weight than v1 —
+    small caps at 0.3em tracking is the most reliable "expensive" tell
+    in the entire type system. */
+@utility eyebrow {
+  font-family: var(--font-body);
+  /* 11px, not 10px. Uppercase at 0.3em tracking is legible at 10px on a
+     desktop monitor and genuinely hard to read on a phone held at arm's
+     length — and this label carries category names and prices. */
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+/**
+ * Buttons. These replaced the solid-orange fills.
+ *
+ * `btn-primary` is a hairline cream outline that inverts on hover.
+ * There is no filled-orange button anywhere in the system any more —
+ * that was the single biggest thing making the site read as takeaway.
+ */
+@utility btn-primary {
+  display: inline-block;
+  border: 1px solid rgba(244, 237, 226, 0.55);
+  padding: 1.15rem 2.6rem;
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-cream);
+  transition: background-color 0.6s var(--ease-naseeb),
+              color 0.6s var(--ease-naseeb),
+              border-color 0.6s var(--ease-naseeb);
+}
+
+@utility btn-ghost {
+  display: inline-block;
+  border: 1px solid rgba(176, 141, 87, 0.5);
+  padding: 1.15rem 2.6rem;
+  font-family: var(--font-body);
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--color-brass);
+  transition: background-color 0.6s var(--ease-naseeb),
+              color 0.6s var(--ease-naseeb),
+              border-color 0.6s var(--ease-naseeb);
+}
+
+/* ── Motion primitives ────────────────────────────────────────── */
+.line-mask {
+  display: block;
+  overflow: hidden;
+}
+.line-mask > span {
+  display: block;
+  transform: translateY(105%);
+  will-change: transform;
+}
+
+[data-reveal] { opacity: 0; }
+
+/* Slower than v1 — 20s. Luxury motion is motion you notice only if
+   you look for it. */
+@keyframes ken-burns {
+  from { transform: scale(1.05); }
+  to   { transform: scale(1); }
+}
+.ken-burns { animation: ken-burns 20s var(--ease-naseeb) forwards; }
+
+@keyframes ember-drop {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  35%  { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+.ember-drop { animation: ember-drop 3s var(--ease-naseeb) infinite; }
+
+@keyframes smoke-drift {
+  0%   { transform: translate3d(-3%, 0, 0) scale(1.1); opacity: 0.12; }
+  50%  { transform: translate3d(3%, -2%, 0) scale(1.2); opacity: 0.22; }
+  100% { transform: translate3d(-3%, 0, 0) scale(1.1); opacity: 0.12; }
+}
+.smoke-drift { animation: smoke-drift 34s ease-in-out infinite; }
+
+/** Floating embers for the hero — drifting upward, slightly sideways.
+    Each particle gets its own duration/offset from an inline style. */
+@keyframes ember-rise {
+  0%   { transform: translate3d(0, 0, 0) scale(1); opacity: 0; }
+  12%  { opacity: 1; }
+  70%  { opacity: 0.7; }
+  100% { transform: translate3d(var(--drift, 20px), -100vh, 0) scale(0.35); opacity: 0; }
+}
+.ember-particle {
+  animation: ember-rise var(--dur, 14s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee-track { animation: marquee 90s linear infinite; }
+.marquee-wrap:hover .marquee-track,
+.marquee-wrap:focus-within .marquee-track { animation-play-state: paused; }
+
+/* Afghan lattice, now copper-toned and even fainter. */
+.geo-pattern {
+  background-image:
+    repeating-linear-gradient(45deg,  var(--color-copper) 0 1px, transparent 1px 30px),
+    repeating-linear-gradient(-45deg, var(--color-copper) 0 1px, transparent 1px 30px);
+  opacity: 0.035;
+}
+
+/* ── Reduced motion ─────────────────────────────────────────────
+   Transforms stop; opacity is forced ON so nothing a scroll trigger
+   would have revealed is left invisible. */
+/* Touch: every inline link gets a 44px hit area even when its text is ~20px.
+   WCAG 2.2 AA (2.5.8) sets the floor at 24px; 44px is the practical mobile
+   standard and what iOS/Android HIGs both ask for.
+
+   Triggered on width OR coarse pointer, not coarse alone. Device emulators
+   frequently report `pointer: fine` even at a phone viewport, so a
+   coarse-only rule silently does nothing in exactly the environment you test
+   it in — and then you ship believing it works. */
+@media (max-width: 768px), (pointer: coarse) {
+  main a:not(.btn-primary):not(.btn-ghost),
+  footer a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .line-mask > span { transform: none !important; }
+  .ken-burns { animation: none; transform: none; }
+  .marquee-track, .ember-particle { animation: none; }
+  .ember-particle { opacity: 0.5; }
 }

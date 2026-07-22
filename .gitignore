@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Studio originals — ~1 GB of 42MP masters. Needed only to regenerate
+# public/img via `npm run images`, never to build or deploy.
+/drive-download-*/
+*.CR2
+*.ARW
