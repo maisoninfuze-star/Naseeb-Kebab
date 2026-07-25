@@ -460,7 +460,7 @@ export const MENU: MenuItem[] = [
     id: 'hamburger-fromage', category: 'burgers',
     nameFr: 'Hamburger Au Fromage', nameEn: 'Cheeseburger',
     descFr: null, descEn: null, price: 14.24,
-    image: 'card-hamburger-fromage', imageConfidence: 'medium',
+    image: null, imageConfidence: null,
     available: true, featured: false, order: 1,
     needsReview:
       'Generated menu-card image (overhead, stone plate) from the menu-design set — a stand-in, not a studio photo of this dish.',
@@ -469,7 +469,7 @@ export const MENU: MenuItem[] = [
     id: 'burger-poulet', category: 'burgers',
     nameFr: 'Burger Au Poulet', nameEn: 'Chicken Burger',
     descFr: null, descEn: null, price: 14.24,
-    image: 'card-burger-poulet', imageConfidence: 'medium',
+    image: null, imageConfidence: null,
     available: true, featured: false, order: 2,
     needsReview:
       'Generated menu-card image (overhead, stone plate) from the menu-design set — a stand-in, not a studio photo of this dish.',
@@ -478,28 +478,25 @@ export const MENU: MenuItem[] = [
     id: 'wrap-boeuf', category: 'burgers',
     nameFr: 'Wrap Au Bœuf', nameEn: 'Beef Wrap',
     descFr: null, descEn: null, price: 15.4,
-    image: 'card-wrap-boeuf', imageConfidence: 'medium',
+    image: null, imageConfidence: null,
     available: true, featured: false, order: 3,
-    needsReview:
-      'Generated menu-card image (overhead, stone plate) from the menu-design set — a stand-in, not a studio photo of this dish.',
+    needsReview: 'Burgers & wraps show no photo (owner directive).',
   },
   {
     id: 'wrap-poulet', category: 'burgers',
     nameFr: 'Wrap Au Poulet', nameEn: 'Chicken Wrap',
     descFr: null, descEn: null, price: 15.4,
-    image: 'card-wrap-poulet', imageConfidence: 'medium',
+    image: null, imageConfidence: null,
     available: true, featured: false, order: 4,
-    needsReview:
-      'Generated menu-card image (overhead, stone plate) from the menu-design set — a stand-in, not a studio photo of this dish.',
+    needsReview: 'Burgers & wraps show no photo (owner directive).',
   },
   {
     id: 'wrap-agneau', category: 'burgers',
     nameFr: "Wrap À L'agneau", nameEn: 'Lamb Wrap',
     descFr: null, descEn: null, price: 17.6,
-    image: 'card-wrap-agneau', imageConfidence: 'medium',
+    image: null, imageConfidence: null,
     available: true, featured: false, order: 5,
-    needsReview:
-      'Generated menu-card image (overhead, stone plate) from the menu-design set — a stand-in, not a studio photo of this dish.',
+    needsReview: 'Burgers & wraps show no photo (owner directive).',
   },
 
   // ─────────────────────────── DESSERTS ───────────────────────────
