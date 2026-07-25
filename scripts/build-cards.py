@@ -12,7 +12,7 @@ No AI, no credits: every output pixel is original camera data, only the plate
 colour is shifted.
 """
 import os, glob
-from PIL import Image, ImageFilter, ImageChops
+from PIL import Image, ImageFilter, ImageChops, ImageDraw
 
 SRC = '/Users/inder/Claude/Projects/Naseeb Kebab/drive-download-20260721T021114Z-1-001'
 OUT = '/Users/inder/Claude/Projects/Naseeb Kebab/menu-v2/cards'
@@ -62,20 +62,86 @@ UNVERIFIED = {'sultan', 'mazar', 'kabab-poulet', 'tikka-kabab', 'dopiaza',
               'combo-dostan', 'combo-naseeb', 'combo-watan'}
 
 
-def plate_bbox(im, thresh=46):
+def _otsu(hist):
+    """Threshold that best separates the bright dish from the dark slate.
+
+    A fixed threshold misfired on the wide platters — on combo-dostan it
+    reported a bounding box spanning the entire frame, because the backdrop's
+    own gradient rose above the constant. Otsu picks the split point per photo.
+    """
+    total = sum(hist)
+    sum_all = sum(i * h for i, h in enumerate(hist))
+    sumB = wB = best = thr = 0
+    for i, h in enumerate(hist):
+        wB += h
+        if wB == 0:
+            continue
+        wF = total - wB
+        if wF == 0:
+            break
+        sumB += i * h
+        mB, mF = sumB / wB, (sum_all - sumB) / wF
+        var = wB * wF * (mB - mF) ** 2
+        if var > best:
+            best, thr = var, i
+    return thr
+
+
+def plate_bbox(im):
     small = im.convert('L').resize((im.width // 16, im.height // 16)).filter(ImageFilter.MedianFilter(5))
-    bb = small.point(lambda p: 255 if p > thresh else 0).getbbox()
+    # drop a little below the Otsu split so the darker plate rim is included
+    thr = max(8, int(_otsu(small.histogram()) * 0.80))
+    bb = small.point(lambda p: 255 if p > thr else 0).getbbox()
     return tuple(v * 16 for v in bb) if bb else (0, 0, im.width, im.height)
 
 
-def square_crop(path, pad=1.06):
+def ground_canvas(im):
+    """A square backdrop built from the photo's OWN ground.
+
+    A flat fill left a visible rectangle on the sultan/mazar frames, whose
+    backdrop vignettes noticeably across the frame — one average tone cannot
+    match both the middle and the corners. Blurring a cover-resized copy of the
+    source reproduces that falloff and the slate texture, so the pasted dish has
+    nothing to seam against. Darkened slightly so it stays behind the food.
+    """
+    w, h = im.size
+    s = max(SQ / w, SQ / h)
+    bg = im.resize((max(1, round(w * s)), max(1, round(h * s))), Image.LANCZOS)
+    l, t = (bg.width - SQ) // 2, (bg.height - SQ) // 2
+    bg = bg.crop((l, t, l + SQ, t + SQ)).filter(ImageFilter.GaussianBlur(SQ / 14))
+    return bg.point(lambda p: int(p * 0.72))
+
+
+def fit_square(path, fit=0.97, margin=1.02):
+    """Fit the WHOLE dish inside the card's inscribed circle.
+
+    Cropping a square out of the frame cannot work for the wide platters: the
+    dish is up to 1.5x wider than the source is tall, so any square crop is
+    narrower than the dish and the circle slices the ends off. Instead the dish
+    is scaled so its longest side spans `fit` of the card, then centred on a
+    canvas filled with the photo's own ground — the rectangle's edges feathered
+    so the join is invisible. Nothing is cut.
+    """
     im = Image.open(path).convert('RGB')
     x0, y0, x1, y1 = plate_bbox(im)
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
-    side = min(max(x1 - x0, y1 - y0) * pad, im.height)
-    l = max(0, min(im.width - side, cx - side / 2))
-    t = max(0, min(im.height - side, cy - side / 2))
-    return im.crop((int(l), int(t), int(l + side), int(t + side))).resize((SQ, SQ), Image.LANCZOS)
+    bw, bh = (x1 - x0) * margin, (y1 - y0) * margin
+    l, t = max(0, cx - bw / 2), max(0, cy - bh / 2)
+    r, b = min(im.width, cx + bw / 2), min(im.height, cy + bh / 2)
+    dish = im.crop((int(l), int(t), int(r), int(b)))
+
+    scale = (SQ * fit) / max(dish.width, dish.height)
+    nw, nh = max(1, round(dish.width * scale)), max(1, round(dish.height * scale))
+    dish = dish.resize((nw, nh), Image.LANCZOS)
+
+    feather = max(4, int(min(nw, nh) * 0.035))
+    alpha = Image.new('L', (nw, nh), 0)
+    ImageDraw.Draw(alpha).rectangle((feather, feather, nw - 1 - feather, nh - 1 - feather), fill=255)
+    alpha = alpha.filter(ImageFilter.GaussianBlur(feather * 0.6))
+
+    canvas = ground_canvas(im)
+    canvas.paste(dish, ((SQ - nw) // 2, (SQ - nh) // 2), alpha)
+    return canvas
 
 
 def to_stone(img):
@@ -99,7 +165,7 @@ if __name__ == '__main__':
         p = os.path.join(SRC, fname)
         if not os.path.exists(p):
             missing.append((slug, fname)); continue
-        to_stone(square_crop(p)).save(os.path.join(OUT, f'{slug}.png'))
+        to_stone(fit_square(p)).save(os.path.join(OUT, f'{slug}.png'))
         flag = '  (identity UNVERIFIED)' if slug in UNVERIFIED else ''
         print(f'  {slug:<15} <- {fname}{flag}')
         done += 1
