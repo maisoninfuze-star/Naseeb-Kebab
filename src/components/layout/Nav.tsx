@@ -124,6 +124,21 @@ export default function Nav({ locale }: { locale: Locale }) {
         )}
         style={{ transitionTimingFunction: 'cubic-bezier(0.22,1,0.36,1)' }}
       >
+        {/* Legibility scrim for the TRANSPARENT state.
+            Cream nav type over a dark hero is fine, but the moment the bar sits
+            over bright content — the catering film's pastries, a pale page
+            header — it becomes unreadable and reads as broken. A soft
+            top-down fade costs nothing visually on dark backgrounds and
+            guarantees contrast on light ones. It fades out once the solid
+            compact bar takes over, so the two never stack. */}
+        <div
+          aria-hidden
+          className={cn(
+            'pointer-events-none absolute inset-x-0 top-0 -z-10 h-[160%] transition-opacity duration-500',
+            'bg-[linear-gradient(to_bottom,rgba(11,11,11,0.78),rgba(11,11,11,0.45)_45%,transparent)]',
+            compact ? 'opacity-0' : 'opacity-100',
+          )}
+        />
         {/* A 3-column grid on desktop rather than an absolutely-positioned
             wordmark. Taking the wordmark out of flow let the two link groups
             run underneath it — "Traiteur" sat on top of the logo at 1440px.

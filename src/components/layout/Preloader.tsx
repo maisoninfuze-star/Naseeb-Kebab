@@ -1,102 +1,51 @@
-'use client'
-
-import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { prefersReducedMotion } from '@/lib/motion'
+import { CONFIRMED } from '@/data/site'
 
 /**
- * Plays once per PAGE LOAD, not once per session.
+ * LOGO FLAME IGNITION — server-rendered, CSS-driven.
  *
- * This is a module-level flag, so it resets on every hard load — including a
- * reload, which is exactly what the previous sessionStorage version got wrong:
- * a reload is the same browser session, so the intro was suppressed and the
- * page appeared to "lose" its animation. Because the flag lives in memory and
- * the Preloader is mounted in the persistent root layout, it also does NOT
- * replay on client-side (Link) navigation — the component simply never
- * re-mounts there, so the effect never runs again. Reload replays; navigating
- * between pages does not.
- */
-let hasPlayedThisLoad = false
-
-/**
- * LOGO FLAME IGNITION
+ * ═══════════════════════════════════════════════════════════════════
+ * WHY THIS IS NOT A CLIENT COMPONENT ANY MORE
+ * ═══════════════════════════════════════════════════════════════════
+ * It used to be `'use client'` with `useState(false)` and an effect that
+ * flipped it true on mount. That produces exactly the bug reported: the
+ * server sends a page with NO overlay, the browser paints it, React hydrates,
+ * and only THEN does the overlay appear. You see the homepage for a split
+ * second, then the intro — backwards.
  *
- * An ember rises, the flame catches, the wordmark settles, the curtain lifts.
- * Total 1.65s — under the 1.8s ceiling in the brief.
+ * There is no way to fix that ordering from inside a client component: the
+ * first paint happens before any JS runs. So the overlay now ships in the
+ * server HTML, present in the very first frame, and CSS alone animates it
+ * away. No JS, no hydration gap, no flash.
  *
- * Skipped for prefers-reduced-motion, and absent entirely with JS disabled
- * (the overlay never mounts, so the page is simply there). It never blocks:
- * the page underneath is fully rendered and the overlay lifts off it.
+ * Because it lives in the root layout it never re-mounts on client-side
+ * navigation — so it plays once per real page load, not on every link click.
+ *
+ * `prefers-reduced-motion` hides it outright (see globals.css). With JS
+ * disabled it still animates and still leaves, because it was never JS-driven.
  */
 export default function Preloader() {
-  const [show, setShow] = useState(false)
-
-  useEffect(() => {
-    if (prefersReducedMotion()) return
-    if (hasPlayedThisLoad) return
-    hasPlayedThisLoad = true
-
-    setShow(true)
-    document.documentElement.style.overflow = 'hidden'
-
-    const done = setTimeout(() => {
-      setShow(false)
-      document.documentElement.style.overflow = ''
-    }, 1650)
-
-    return () => {
-      clearTimeout(done)
-      document.documentElement.style.overflow = ''
-    }
-  }, [])
-
   return (
-    <AnimatePresence>
-      {show && (
-        <motion.div
-          key="preloader"
-          className="fixed inset-0 z-[300] grid place-items-center bg-obsidian"
-          initial={{ opacity: 1 }}
-          exit={{ y: '-100%' }}
-          transition={{ duration: 0.85, ease: [0.76, 0, 0.24, 1] }}
-          aria-hidden
-        >
-          <div className="relative grid place-items-center">
-            {/* The ember — a single point of light that swells, then seeds the flame. */}
-            <motion.span
-              className="absolute h-1.5 w-1.5 rounded-full bg-ember"
-              initial={{ opacity: 0, scale: 0.4, y: 26 }}
-              animate={{ opacity: [0, 1, 1, 0], scale: [0.4, 1, 2.6, 5], y: [26, 4, -6, -10] }}
-              transition={{ duration: 0.85, times: [0, 0.3, 0.7, 1], ease: 'easeOut' }}
-              style={{ boxShadow: '0 0 22px 8px rgba(241,90,36,0.55)' }}
-            />
+    <div className="nk-intro" aria-hidden>
+      <div className="nk-intro__inner">
+        {/* Ember — a single point of light that swells and seeds the flame. */}
+        <span className="nk-intro__ember" />
 
-            {/* The flame catches from that ember. */}
-            <motion.img
-              src="/brand/flame-ember.png"
-              alt=""
-              width={80}
-              height={111}
-              className="h-[72px] w-auto"
-              initial={{ opacity: 0, scale: 0.72, filter: 'blur(6px)' }}
-              animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-              transition={{ duration: 0.55, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            />
+        <img
+          src="/brand/flame-ember.png"
+          alt=""
+          width={80}
+          height={111}
+          className="nk-intro__flame"
+        />
 
-            {/* Wordmark settles underneath. */}
-            <motion.img
-              src="/brand/wordmark-cream.png"
-              alt=""
-              width={720}
-              height={720}
-              className="mt-1 w-[min(64vw,300px)]"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.78, ease: [0.22, 1, 0.36, 1] }}
-            />
-          </div>
-        </motion.div>
-      )}
-    </AnimatePresence>
+        <img
+          src="/brand/wordmark-cream.png"
+          alt={CONFIRMED.name}
+          width={720}
+          height={720}
+          className="nk-intro__mark"
+        />
+      </div>
+    </div>
   )
 }

@@ -5,6 +5,7 @@ import { getDict } from '@/data/dictionary'
 import { CHAPTERS, LAPIS, OWNER_FIELDS } from '@/data/story'
 import PageHeader from '@/components/ui/PageHeader'
 import StoryChapters from '@/components/story/StoryChapters'
+import { StoryFilm } from '@/components/home/VideoSections'
 
 export async function generateMetadata({
   params,
@@ -70,6 +71,8 @@ export default async function StoryPage({
       </section>
 
       {/* ── Four chapters, alternating, with parallax ── */}
+      <StoryFilm locale={locale} />
+
       <StoryChapters chapters={CHAPTERS} locale={locale} />
 
       {/* ── The blue ── */}

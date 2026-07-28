@@ -141,7 +141,15 @@ export default function Footer({ locale }: { locale: Locale }) {
           <p>
             © {year} {CONFIRMED.name}. {t.footer.rights}
           </p>
-          <ul className="flex gap-6">
+
+          {/* Studio credit. Sits between the copyright and the legal links so
+              it reads as a signature, not a nav item — dimmer than both, and
+              it only renders if the dictionary actually carries a note. */}
+          {t.footer.builtNote && (
+            <p className="text-sand/40 sm:order-3">{t.footer.builtNote}</p>
+          )}
+
+          <ul className="flex gap-6 sm:order-2">
             <li>
               <Link href={path('privacy', locale)} className="hover:text-ember">
                 {t.footer.privacy}

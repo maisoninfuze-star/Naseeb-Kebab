@@ -170,7 +170,7 @@ export const dict = {
       privacy: 'Politique de confidentialité',
       terms: 'Conditions d’utilisation',
       rights: 'Tous droits réservés.',
-      builtNote: '',
+      builtNote: 'Propulsé par B12 Ventures',
     },
     common: {
       from: 'à partir de',
@@ -341,7 +341,7 @@ export const dict = {
       privacy: 'Privacy Policy',
       terms: 'Terms',
       rights: 'All rights reserved.',
-      builtNote: '',
+      builtNote: 'Powered by B12 Ventures',
     },
     common: {
       from: 'from',

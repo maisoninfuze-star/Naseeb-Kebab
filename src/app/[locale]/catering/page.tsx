@@ -4,6 +4,7 @@ import { isLocale } from '@/lib/i18n'
 import { getDict } from '@/data/dictionary'
 import PageHeader from '@/components/ui/PageHeader'
 import CateringForm from '@/components/ui/CateringForm'
+import { CateringFilm } from '@/components/home/VideoSections'
 import Picture from '@/components/ui/Picture'
 
 export async function generateMetadata({
@@ -38,6 +39,8 @@ export default async function CateringPage({
         lede={t.catering.support}
         image="DSC09446"
       />
+
+      <CateringFilm locale={locale} />
 
       <section className="section-pad gutter grid gap-14 md:grid-cols-12 md:gap-12">
         <div className="md:col-span-5">

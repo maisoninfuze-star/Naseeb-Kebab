@@ -177,7 +177,7 @@ export default function EditorialSplitHero({
 
           {/* Each line is its own overflow-hidden mask so the reveal reads as
               type rising off a baseline rather than a block fading in. */}
-          <h2 className="mt-7 font-display text-[clamp(2.5rem,5.4vw,4.875rem)] font-light leading-[0.95] tracking-[-0.02em] text-cream">
+          <h2 className="mt-7 font-display text-[clamp(2.15rem,3.9vw,3.5rem)] font-light leading-[1.02] tracking-[-0.02em] text-cream [text-wrap:balance]">
             {headingLines.map((line, i) => (
               <span key={line + i} className="block overflow-hidden">
                 <motion.span
