@@ -22,44 +22,47 @@ SQ = 900
 H_LO, H_HI, S_MIN, V_MIN = 96, 156, 28, 46
 STONE = (28, 26, 1.18, 26)   # hue, sat, value-gain, value-bias
 
-# card slug -> exact source frame (chosen for clean framing / confirmed identity)
+# card slug -> exact source frame.
+#
+# Mapping received from the client (Falak) on 2026-07-27 — every former
+# VERIFY- guess is now resolved by her list, including several corrections
+# where the shoot-day filename was wrong (09528 'ragout-vert' is Dopiaza,
+# 09518 'ragout-rouge' is Chicken Tandoori, 09526 'kofta-pulao' is Qorma
+# Pulao, 09539 'kofta-ou-aubergine' is Kofta Pulao). Her word overrides the
+# filename. The three combo cards are built by composite-cards.py instead
+# (rice / thigh compositing) and must not appear here.
 CARDS = {
-    # Starters (small-portion vessels share the main-dish frames)
-    'ashak':          'ashak-DSC09520.jpg',
-    'mantu':          'mantu-DSC09512.jpg',
-    'banjan-burani':  'banjan-burani-DSC09504.jpg',
-    'qorma':          'qorma-de-poulet-DSC09532.jpg',
     # Kababs & grillades
-    'kobidah-boeuf':  'kobidah-de-boeuf-DSC09454.jpg',
+    'kobidah-boeuf':  'kobidah-de-boeuf-DSC09456.jpg',
     'kobidah-mixte':  'kobidah-mixte-DSC09435.jpg',
-    'kobidah-poulet': 'kobidah-de-poulet-DSC09458.jpg',
-    'cuisses':        'cuisses-de-poulet-4x-DSC09437.jpg',
-    'jarret':         'jarret-agneau-qabuli-DSC09508.jpg',
-    'biryani':        'biryani-au-poulet-DSC09492.jpg',
-    'poisson':        'poisson-bassa-DSC09496.jpg',
-    'sultan':         'VERIFY-plateau-mixte-sultan-ou-mazar-DSC09430.jpg',
-    'mazar':          'VERIFY-plateau-mixte-sultan-ou-mazar-DSC09433.jpg',
-    'kabab-poulet':   'VERIFY-tikka-kabab-ou-kabab-au-poulet-DSC09467.jpg',
-    'tikka-kabab':    'barg-kabab-DSC09462.jpg',        # filet mignon skewer
-    'tikka-agneau':   'tikka-agneau-DSC09480.jpg',
+    'kobidah-poulet': 'kobidah-de-poulet-DSC09459.jpg',
+    'sultan':         'VERIFY-barg-kabab-ou-plateau-mixte-DSC09444.jpg',
+    'mazar':          'VERIFY-poulet-et-kobidah-sultan-ou-mazar-DSC09448.jpg',
+    'bamyan':         'VERIFY-poulet-et-barg-mazar-ou-sultan-DSC09451.jpg',
+    'kabab-poulet':   'VERIFY-tikka-kabab-ou-kabab-au-poulet-DSC09466.jpg',
+    'tikka-kabab':    'tikka-agneau-DSC09482.jpg',
     'chopan':         'chopan-kabab-DSC09475.jpg',
-    'chaplee':        'chaplee-kabab-DSC09470.jpg',
-    # Currys & ragoûts
-    'qorma-pulao':    'qorma-pulao-DSC09534.jpg',
-    'dopiaza':        'VERIFY-ragout-rouge-dopiaza-ou-qorma-DSC09516.jpg',
-    'kofta-pulao':    'kofta-pulao-DSC09524.jpg',
-    'sabzi-pulao':    'sabzi-pulao-DSC09540.jpg',
-    # Platters
-    'combo-dostan':   'VERIFY-grand-plateau-mixte-sultan-mazar-ou-combo-DSC09485.jpg',
-    'combo-naseeb':   'VERIFY-grand-plateau-mixte-avec-riz-DSC09489.jpg',
-    'combo-watan':    'VERIFY-grand-plateau-mixte-sultan-mazar-ou-combo-DSC09486.jpg',
+    'chaplee':        'chaplee-kabab-DSC09473.jpg',
+    'cuisses':        'cuisses-de-poulet-4x-DSC09439.jpg',
+    'barg':           'barg-kabab-DSC09462.jpg',
+    'poisson':        'poisson-bassa-DSC09497.jpg',
+    # Plats principaux
+    'jarret':         'jarret-agneau-qabuli-DSC09508.jpg',
+    'biryani':        'biryani-au-poulet-DSC09494.jpg',
+    'qorma-pulao':    'kofta-pulao-DSC09526.jpg',
+    'dopiaza':        'VERIFY-ragout-vert-qorma-de-veau-ou-sabzi-DSC09528.jpg',
+    'kofta-pulao':    'VERIFY-kofta-ou-aubergine-en-sauce-DSC09539.jpg',
+    'sabzi-pulao':    'sabzi-pulao-DSC09542.jpg',
+    'banjan-burani':  'banjan-burani-DSC09504.jpg',
+    'mantu':          'mantu-DSC09515.jpg',
+    'ashak':          'ashak-DSC09521.jpg',
+    'tandoori':       'VERIFY-ragout-rouge-dopiaza-ou-qorma-DSC09518.jpg',
     # Dessert
-    'firni':          'firni-DSC09544.jpg',
+    'firni':          'firni-DSC09547.jpg',
 }
 
-# identity not owner-confirmed — safe to show as generic, must not be relabelled
-UNVERIFIED = {'sultan', 'mazar', 'kabab-poulet', 'tikka-kabab', 'dopiaza',
-              'combo-dostan', 'combo-naseeb', 'combo-watan'}
+# All identities confirmed by the client's 2026-07-27 list.
+UNVERIFIED = set()
 
 
 def _otsu(hist):
@@ -165,7 +168,7 @@ if __name__ == '__main__':
         p = os.path.join(SRC, fname)
         if not os.path.exists(p):
             missing.append((slug, fname)); continue
-        to_stone(fit_square(p)).save(os.path.join(OUT, f'{slug}.png'))
+        fit_square(p).save(os.path.join(OUT, f'{slug}.png'))   # original colours (client, 2026-07-27)
         flag = '  (identity UNVERIFIED)' if slug in UNVERIFIED else ''
         print(f'  {slug:<15} <- {fname}{flag}')
         done += 1
