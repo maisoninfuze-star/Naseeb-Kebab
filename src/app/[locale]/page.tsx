@@ -6,9 +6,8 @@ import Statement from '@/components/home/Statement'
 import CharcoalStory from '@/components/home/CharcoalStory'
 import Platters from '@/components/home/Platters'
 import MenuPreview from '@/components/home/MenuPreview'
-import StoryTeaser from '@/components/home/StoryTeaser'
-import CateringTeaser from '@/components/home/CateringTeaser'
 import Testimonials from '@/components/home/Testimonials'
+import { CateringFilm, StoryFilm } from '@/components/home/VideoSections'
 import VisitSplit from '@/components/home/VisitSplit'
 
 /**
@@ -54,8 +53,8 @@ export default async function HomePage({
       <CharcoalStory locale={locale} />
       <Platters locale={locale} />
       <MenuPreview locale={locale} />
-      <StoryTeaser locale={locale} />
-      <CateringTeaser locale={locale} />
+      <StoryFilm locale={locale} />
+      <CateringFilm locale={locale} />
       <Testimonials locale={locale} />
       <VisitSplit locale={locale} />
     </>
