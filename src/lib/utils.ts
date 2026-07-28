@@ -11,9 +11,12 @@ export const cn = (...inputs: ClassValue[]) => twMerge(clsx(inputs))
  * `wide` crop of a non-hero silently 404s. `hasWide` guards that at the call
  * site rather than at runtime.
  */
-export type Crop = 'wide' | 'ed' | 'sq' | 'tall'
+export type Crop = 'wide' | 'ed' | 'sq' | 'tall' | 'menu'
 
 const WIDTHS: Record<Crop, number[]> = {
+  // 3:2 — the native ratio of the studio masters. Used on the menu so a wide
+  // oval plate is shown whole rather than cover-cropped into a portrait box.
+  menu: [1400, 900, 600],
   wide: [2400, 1600, 900],
   ed: [1400, 900, 600],
   sq: [900, 500],
@@ -21,6 +24,7 @@ const WIDTHS: Record<Crop, number[]> = {
 }
 
 export const ASPECT: Record<Crop, string> = {
+  menu: '3 / 2',
   wide: '16 / 9',
   ed: '4 / 5',
   sq: '1 / 1',

@@ -234,7 +234,7 @@ export default function MenuBrowser({ locale }: { locale: Locale }) {
                         >
                           <Picture
                             id={item.image}
-                            crop="ed"
+                            crop="menu"
                             alt={dishAlt(item.nameFr, item.nameEn, locale)}
                             sizes="(max-width: 1024px) 88vw, 320px"
                             className="mt-5 w-full"
@@ -266,7 +266,7 @@ export default function MenuBrowser({ locale }: { locale: Locale }) {
                     >
                       <Picture
                         id={standing.image}
-                        crop="ed"
+                        crop="menu"
                         alt={dishAlt(standing.nameFr, standing.nameEn, locale)}
                         sizes="40vw"
                         className="h-full w-full"
