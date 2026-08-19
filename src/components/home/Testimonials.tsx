@@ -6,6 +6,7 @@ import { REVIEWS, REVIEW_AGGREGATE } from '@/data/reviews'
 import { prefersReducedMotion } from '@/lib/motion'
 import Picture from '@/components/ui/Picture'
 import { cn } from '@/lib/utils'
+import { useImage } from '@/components/DictProvider'
 
 /**
  * TESTIMONIALS SLIDER
@@ -49,7 +50,7 @@ const COPY = {
     prev: 'Avis précédent',
     next: 'Avis suivant',
     goTo: (n: number) => `Aller à l’avis ${n}`,
-    verified: 'Avis Google vérifié',
+    verified: 'Avis Google',
   },
   en: {
     eyebrow: 'Reviews',
@@ -58,7 +59,7 @@ const COPY = {
     prev: 'Previous review',
     next: 'Next review',
     goTo: (n: number) => `Go to review ${n}`,
-    verified: 'Verified Google review',
+    verified: 'Google review',
   },
 }
 
@@ -181,7 +182,7 @@ export default function Testimonials({ locale }: { locale: Locale }) {
           keeps contrast — the reference sits on a mid-brown, ours on obsidian. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <Picture
-          id="DSC09444"
+          id={useImage('testimonials.feature')}
           crop="wide"
           fill
           alt=""

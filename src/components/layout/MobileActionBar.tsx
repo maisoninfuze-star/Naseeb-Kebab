@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { type Locale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 import { CONFIRMED, MAPS_DIRECTIONS } from '@/data/site'
 import { track } from '@/lib/analytics'
 import { cn } from '@/lib/utils'
+import { useDict } from '@/components/DictProvider'
 
 /**
  * Sticky Call / Directions / Order bar on small screens.
@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils'
  * hide the actions that actually earn the restaurant money.
  */
 export default function MobileActionBar({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+  const t = useDict(locale)
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {

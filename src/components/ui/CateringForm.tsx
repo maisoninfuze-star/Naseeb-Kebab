@@ -2,11 +2,11 @@
 
 import { useState, useTransition } from 'react'
 import { type Locale } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 import { CONFIRMED } from '@/data/site'
 import { submitInquiry } from '@/app/actions/inquiry'
 import { track } from '@/lib/analytics'
 import { cn } from '@/lib/utils'
+import { useDict } from '@/components/DictProvider'
 
 /**
  * Catering enquiry form.
@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils'
  * reader and not only to the eye.
  */
 export default function CateringForm({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+  const t = useDict(locale)
   const f = t.catering.form
 
   const [pending, startTransition] = useTransition()

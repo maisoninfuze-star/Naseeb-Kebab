@@ -1,21 +1,17 @@
-import { isConfigured, serverClient, type Inquiry } from '@/lib/supabase/server'
+import { listInquiries } from '@/lib/content/store'
+import type { StoredInquiry } from '@/lib/content/types'
 
-/** CSV export of the enquiry inbox, for the owner's own records. */
+/**
+ * CSV export of the enquiry inbox, for the owner's own records.
+ *
+ * Goes through the store rather than Supabase directly — it used to 503 without
+ * a database, which under the file driver meant refusing to export enquiries
+ * that existed. On an ephemeral host this export is the only way to keep them.
+ */
 export async function GET() {
-  if (!isConfigured) {
-    return new Response('Supabase not configured', { status: 503 })
-  }
+  const rows = await listInquiries()
 
-  const supabase = await serverClient()
-  const { data, error } = await supabase!
-    .from('inquiries')
-    .select('*')
-    .order('created_at', { ascending: false })
-
-  if (error) return new Response(error.message, { status: 500 })
-
-  const rows = (data ?? []) as Inquiry[]
-  const cols: (keyof Inquiry)[] = [
+  const cols: (keyof StoredInquiry)[] = [
     'created_at', 'name', 'phone', 'email',
     'event_date', 'guests', 'occasion', 'service_type',
     'message', 'locale', 'status',

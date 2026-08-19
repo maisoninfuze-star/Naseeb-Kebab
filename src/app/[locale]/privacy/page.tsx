@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { isLocale } from '@/lib/i18n'
+import { isLocale, seoMeta, type Locale } from '@/lib/i18n'
 import { CONFIRMED } from '@/data/site'
 import PageHeader from '@/components/ui/PageHeader'
 import Prose from '@/components/ui/Prose'
@@ -11,10 +11,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  return {
-    title: locale === 'fr' ? 'Politique de confidentialité' : 'Privacy Policy',
-    robots: { index: true, follow: true },
-  }
+  const fr = locale === 'fr'
+  const title = fr ? 'Politique de confidentialité' : 'Privacy Policy'
+  const description = fr
+    ? 'Politique de confidentialité de Naseeb Kabab — comment nous traitons vos renseignements personnels, conformément à la Loi 25 du Québec.'
+    : 'Naseeb Kabab privacy policy — how we handle your personal information, in line with Québec’s Law 25.'
+  return { ...seoMeta({ key: 'privacy', locale: locale as Locale, title, description }), robots: { index: true, follow: true } }
 }
 
 /**
@@ -83,9 +85,9 @@ export default async function PrivacyPage({
 
             <h2>Hébergement</h2>
             <p>
-              Les demandes sont stockées chez notre fournisseur d’infonuagique. Selon la
-              configuration retenue, ces données peuvent être hébergées à l’extérieur du
-              Québec. <strong>[À confirmer par le restaurant : région d’hébergement.]</strong>
+              Les demandes sont stockées chez notre fournisseur d’infonuagique. Selon nos
+              prestataires de services, ces données peuvent être hébergées à l’extérieur du
+              Québec, notamment au Canada ou aux États-Unis.
             </p>
 
             <h2>Vos droits</h2>
@@ -98,8 +100,10 @@ export default async function PrivacyPage({
 
             <h2>Responsable de la protection des renseignements personnels</h2>
             <p>
-              <strong>[À compléter par le restaurant : nom et coordonnées de la personne
-              responsable, tel qu’exigé par la Loi 25.]</strong>
+              La responsabilité de la protection des renseignements personnels incombe à la
+              direction de {CONFIRMED.name}. Pour toute question ou demande à ce sujet,
+              écrivez à <a href={`mailto:${CONFIRMED.email}`}>{CONFIRMED.email}</a> ou
+              téléphonez au <a href={`tel:${CONFIRMED.phone}`}>{CONFIRMED.phoneDisplay}</a>.
             </p>
 
             <h2>Nous joindre</h2>
@@ -153,9 +157,9 @@ export default async function PrivacyPage({
 
             <h2>Hosting</h2>
             <p>
-              Enquiries are stored with our cloud provider. Depending on the configuration
-              chosen, that data may be hosted outside Québec.{' '}
-              <strong>[To be confirmed by the restaurant: hosting region.]</strong>
+              Enquiries are stored with our cloud provider. Depending on our service
+              providers, that data may be hosted outside Québec, including in Canada or the
+              United States.
             </p>
 
             <h2>Your rights</h2>
@@ -168,8 +172,10 @@ export default async function PrivacyPage({
 
             <h2>Privacy officer</h2>
             <p>
-              <strong>[To be completed by the restaurant: name and contact details of the
-              person responsible for privacy, as required by Law 25.]</strong>
+              Responsibility for the protection of personal information rests with the
+              management of {CONFIRMED.name}. For any question or request on this subject,
+              write to <a href={`mailto:${CONFIRMED.email}`}>{CONFIRMED.email}</a> or call{' '}
+              <a href={`tel:${CONFIRMED.phone}`}>{CONFIRMED.phoneDisplay}</a>.
             </p>
 
             <h2>Contact</h2>

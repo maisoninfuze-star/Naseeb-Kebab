@@ -26,7 +26,7 @@
  * black marble with gold veining, the same brass and candle bokeh, and the
  * restaurant's own teal-glazed plate with its thin gold rim.
  *
- * Output: public/img-generated/{id}-ed.jpg (4:5) and {id}-sq.jpg (1:1, centre
+ * Output: pipeline/img-generated/{id}-ed.jpg (4:5) and {id}-sq.jpg (1:1, centre
  * crop). Those are the only two crops these dishes are used at — none of them
  * appears in the hero, which needs wide/tall.
  *
@@ -39,7 +39,7 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import sharp from 'sharp'
 
-const OUT_DIR = path.resolve(process.cwd(), 'public/img-generated')
+const OUT_DIR = path.resolve(process.cwd(), 'pipeline/img-generated')
 
 function readFalKey() {
   if (process.env.FAL_KEY) return process.env.FAL_KEY

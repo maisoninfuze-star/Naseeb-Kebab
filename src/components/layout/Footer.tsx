@@ -1,12 +1,20 @@
 import Link from 'next/link'
 import { type Locale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
-import { CONFIRMED, UNCONFIRMED, MAPS_URL } from '@/data/site'
+import { CONFIRMED, MAPS_URL } from '@/data/site'
+import { getSettings } from '@/lib/content/resolve'
 import AfghanFlag from '@/components/ui/AfghanFlag'
+import { getResolvedDict } from '@/lib/content/dict'
 
-export default function Footer({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+/**
+ * The footer carries hours and the social links on EVERY page, so it is the
+ * single highest-leverage place for the owner's settings to land. It is a
+ * server component, so it resolves them itself rather than having every page
+ * thread them down.
+ */
+export default async function Footer({ locale }: { locale: Locale }) {
+  const t = await getResolvedDict(locale)
   const year = new Date().getFullYear()
+  const settings = await getSettings()
 
   const explore: { key: Parameters<typeof path>[0]; label: string }[] = [
     { key: 'menu', label: t.nav.fullMenu },
@@ -99,9 +107,9 @@ export default function Footer({ locale }: { locale: Locale }) {
           {/* Hours + social */}
           <div className="md:col-span-2">
             <h2 className="eyebrow text-ember">{t.visit.hours}</h2>
-            {UNCONFIRMED.hours ? (
+            {settings.hours ? (
               <ul className="mt-5 space-y-1.5 text-sm text-cream/85">
-                {Object.entries(UNCONFIRMED.hours).map(([day, hrs]) => (
+                {Object.entries(settings.hours).map(([day, hrs]) => (
                   <li key={day} className="flex justify-between gap-3">
                     <span>{day}</span>
                     <span className="text-sand/70">{hrs}</span>
@@ -114,18 +122,18 @@ export default function Footer({ locale }: { locale: Locale }) {
             )}
 
             <h2 className="eyebrow mt-8 text-ember">{t.footer.follow}</h2>
-            {UNCONFIRMED.instagram || UNCONFIRMED.facebook ? (
+            {settings.instagram || settings.facebook ? (
               <ul className="mt-5 space-y-2 text-sm">
-                {UNCONFIRMED.instagram && (
+                {settings.instagram && (
                   <li>
-                    <a href={UNCONFIRMED.instagram} className="hover:text-ember">
+                    <a href={settings.instagram} className="hover:text-ember">
                       Instagram
                     </a>
                   </li>
                 )}
-                {UNCONFIRMED.facebook && (
+                {settings.facebook && (
                   <li>
-                    <a href={UNCONFIRMED.facebook} className="hover:text-ember">
+                    <a href={settings.facebook} className="hover:text-ember">
                       Facebook
                     </a>
                   </li>

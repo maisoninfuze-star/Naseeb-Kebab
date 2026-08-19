@@ -124,6 +124,14 @@ export default function EditorialSplitHero({
     const el = videoRef.current
     if (!el) return
 
+    // Reduced-motion: hold the poster, never play. Same WCAG 2.2.2 reasoning as
+    // the hero — the parallax already collapses via `reduce`, and the looping
+    // film must stop for the same users.
+    if (reduce) {
+      el.pause()
+      return
+    }
+
     const obs = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) void el.play().catch(() => {})
@@ -133,7 +141,7 @@ export default function EditorialSplitHero({
     )
     obs.observe(el)
     return () => obs.disconnect()
-  }, [])
+  }, [reduce])
 
   /** Reduced motion: same end state, no travel. */
   const v = (from: Record<string, unknown>): Variants => ({

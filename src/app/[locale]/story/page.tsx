@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { isLocale } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
+import {isLocale, seoMeta, type Locale} from '@/lib/i18n'
 import { CHAPTERS, LAPIS, OWNER_FIELDS } from '@/data/story'
 import PageHeader from '@/components/ui/PageHeader'
 import StoryChapters from '@/components/story/StoryChapters'
 import { StoryFilm } from '@/components/home/VideoSections'
+import { getResolvedDict } from '@/lib/content/dict'
+import { getImages } from '@/lib/content/images'
 
 export async function generateMetadata({
   params,
@@ -14,12 +15,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const fr = locale === 'fr'
-  return {
-    title: fr ? 'Notre histoire' : 'Our Story',
-    description: fr
+    const title = fr ? 'Notre histoire' : 'Our Story'
+  const description = fr
       ? 'La table afghane : le dastarkhān, le thé, le pain et le charbon de bois. Naseeb Kabab, Laval.'
-      : 'The Afghan table: the dastarkhān, the tea, the bread and the charcoal. Naseeb Kabab, Laval.',
-  }
+      : 'The Afghan table: the dastarkhān, the tea, the bread and the charcoal. Naseeb Kabab, Laval.'
+  return seoMeta({ key: 'story', locale: locale as Locale, title, description })
 }
 
 /**
@@ -41,7 +41,8 @@ export default async function StoryPage({
 }) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
-  const t = getDict(locale)
+  const images = await getImages()
+  const t = await getResolvedDict(locale)
   const fr = locale === 'fr'
 
   return (
@@ -49,7 +50,7 @@ export default async function StoryPage({
       <PageHeader
         eyebrow={t.story.eyebrow}
         title={t.story.title.join(' ')}
-        image="DSC09509"
+        image={images['page.story']}
       />
 
       {/* ── Opening statement — cream paper, generous air ── */}

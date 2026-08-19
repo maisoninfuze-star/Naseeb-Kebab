@@ -45,8 +45,8 @@ async function menuIds() {
 
 async function resolveSource(id) {
   const candidates = [
-    path.resolve(process.cwd(), `public/img-composited/${id}-ed.jpg`),
-    path.resolve(process.cwd(), `public/img-generated/${id}-ed.jpg`),
+    path.resolve(process.cwd(), `pipeline/img-composited/${id}-ed.jpg`),
+    path.resolve(process.cwd(), `pipeline/img-generated/${id}-ed.jpg`),
   ]
   for (const c of candidates) if (existsSync(c)) return c
 

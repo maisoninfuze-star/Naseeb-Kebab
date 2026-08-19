@@ -29,14 +29,14 @@
  *   npm run retouch -- --only=DSC09484
  *   npm run retouch                   # the full set
  *
- * Output goes to public/img-retouched/ so the originals are never
+ * Output goes to pipeline/img-retouched/ so the originals are never
  * overwritten and an A/B comparison is always possible.
  */
 import { readFile, mkdir, writeFile, readdir } from 'node:fs/promises'
 import path from 'node:path'
 
 const SRC_DIR = '/Users/inder/Claude/Projects/Naseeb Kebab/drive-download-20260721T021114Z-1-001'
-const OUT_DIR = path.resolve(process.cwd(), 'public/img-retouched')
+const OUT_DIR = path.resolve(process.cwd(), 'pipeline/img-retouched')
 
 /**
  * The four surfaces, chosen from the reference photography.
@@ -191,7 +191,7 @@ async function run() {
 
     const bytes = Buffer.from(await (await fetch(out)).arrayBuffer())
     await writeFile(path.join(OUT_DIR, `${id}.jpg`), bytes)
-    console.log(`  saved public/img-retouched/${id}.jpg`)
+    console.log(`  saved pipeline/img-retouched/${id}.jpg`)
   }
 
   console.log(
