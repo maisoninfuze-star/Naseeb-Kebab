@@ -3,13 +3,13 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { type Locale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 
 import { MENU, formatPrice } from '@/data/menu'
 import { registerGsap, gsap, ScrollTrigger, prefersReducedMotion } from '@/lib/motion'
 import EmberField from '@/components/motion/EmberField'
 import { track } from '@/lib/analytics'
 import { cn } from '@/lib/utils'
+import { useDict } from '@/components/DictProvider'
 
 /**
  * ONE PLATTER, MANY HANDS — the pinned hero.
@@ -51,7 +51,7 @@ const FRAMES: { img: string; item: string }[] = [
 ]
 
 export default function PlateHero({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+  const t = useDict(locale)
   const root = useRef<HTMLElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const [active, setActive] = useState(0)
@@ -67,6 +67,13 @@ export default function PlateHero({ locale }: { locale: Locale }) {
   useEffect(() => {
     const v = videoRef.current
     if (!v) return
+    // Respect prefers-reduced-motion: pause the ember footage and hold the
+    // poster frame instead of looping it. WCAG 2.2.2 — moving content over 5s
+    // must be stoppable, and a reduced-motion user has asked for exactly that.
+    if (prefersReducedMotion()) {
+      v.pause()
+      return
+    }
     const kick = () => {
       if (!document.hidden && v.paused) v.play().catch(() => {})
     }

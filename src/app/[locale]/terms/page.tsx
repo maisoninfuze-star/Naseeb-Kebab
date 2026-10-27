@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { isLocale } from '@/lib/i18n'
+import { isLocale, seoMeta, type Locale } from '@/lib/i18n'
 import { CONFIRMED } from '@/data/site'
 import PageHeader from '@/components/ui/PageHeader'
 import Prose from '@/components/ui/Prose'
@@ -11,7 +11,12 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>
 }): Promise<Metadata> {
   const { locale } = await params
-  return { title: locale === 'fr' ? 'Conditions d’utilisation' : 'Terms of Use' }
+  const fr = locale === 'fr'
+  const title = fr ? 'Conditions d’utilisation' : 'Terms of Use'
+  const description = fr
+    ? 'Conditions d’utilisation du site de Naseeb Kabab, restaurant afghan à Laval.'
+    : 'Terms of use for the Naseeb Kabab website, an Afghan restaurant in Laval.'
+  return seoMeta({ key: 'terms', locale: locale as Locale, title, description })
 }
 
 export default async function TermsPage({

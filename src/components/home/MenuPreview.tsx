@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { AnimatePresence, motion } from 'framer-motion'
 import { type Locale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
-import { byCategory, formatPrice, type CategoryId } from '@/data/menu'
+import { MENU, formatPrice, type CategoryId, type MenuItem } from '@/data/menu'
 import Picture from '@/components/ui/Picture'
 import { track } from '@/lib/analytics'
 import { cn, dishAlt } from '@/lib/utils'
+import { useDict } from '@/components/DictProvider'
 
 /**
  * CROSSFADE MENU TABS
@@ -21,12 +21,23 @@ import { cn, dishAlt } from '@/lib/utils'
  */
 const TABS: CategoryId[] = ['entrees', 'currys', 'kababs', 'partager', 'desserts']
 
-export default function MenuPreview({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+export default function MenuPreview({
+  locale,
+  menu,
+}: {
+  locale: Locale
+  /** Resolved menu (admin edits applied). Falls back to the static import. */
+  menu?: MenuItem[]
+}) {
+  const t = useDict(locale)
   const [active, setActive] = useState<CategoryId>('kababs')
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
 
-  const items = byCategory(active).slice(0, 5)
+  const source = menu ?? MENU
+  const items = source
+    .filter((i) => i.category === active && i.available)
+    .sort((a, b) => a.order - b.order)
+    .slice(0, 5)
   const image = items.find((i) => i.image)?.image ?? 'DSC09484'
 
   const onKeyDown = (e: React.KeyboardEvent) => {
@@ -136,7 +147,9 @@ export default function MenuPreview({ locale }: { locale: Locale }) {
                     transition={{ duration: 0.45, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
                     className="flex items-baseline gap-4 border-b border-cream/8 py-4"
                   >
-                    <span className="text-cream">{item.nameFr}</span>
+                    <span className="text-cream">
+                      {locale === 'fr' ? item.nameFr : item.nameEn}
+                    </span>
                     <span className="h-px flex-1 translate-y-[-3px] bg-cream/12" aria-hidden />
                     <span className="shrink-0 font-body text-sm tabular-nums text-sand/70">
                       {formatPrice(item.price, locale)}

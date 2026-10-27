@@ -28,6 +28,7 @@ export default function Picture({
   sizes = '100vw',
   priority = false,
   fill = false,
+  fit = 'cover',
   portraitCrop = 'tall',
   className,
   imgClassName,
@@ -39,6 +40,9 @@ export default function Picture({
   priority?: boolean
   /** Fill the positioned parent instead of imposing the crop's aspect ratio. */
   fill?: boolean
+  /** `contain` guarantees nothing is cropped — used where the customer is
+   *  inspecting the dish and must see the entire plate. */
+  fit?: 'cover' | 'contain'
   /** Crop served to portrait viewports when `fill` is set. */
   portraitCrop?: Crop
   className?: string
@@ -94,7 +98,7 @@ export default function Picture({
         loading={priority ? 'eager' : 'lazy'}
         decoding={priority ? 'sync' : 'async'}
         fetchPriority={priority ? 'high' : 'auto'}
-        className={cn('h-full w-full object-cover', imgClassName)}
+        className={cn('h-full w-full', fit === 'contain' ? 'object-contain' : 'object-cover', imgClassName)}
       />
     </picture>
   )

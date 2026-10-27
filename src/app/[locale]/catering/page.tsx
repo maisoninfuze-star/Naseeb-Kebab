@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { isLocale } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
+import {isLocale, seoMeta, type Locale} from '@/lib/i18n'
 import PageHeader from '@/components/ui/PageHeader'
 import CateringForm from '@/components/ui/CateringForm'
 import { CateringFilm } from '@/components/home/VideoSections'
 import Picture from '@/components/ui/Picture'
+import { getResolvedDict } from '@/lib/content/dict'
+import { getImages } from '@/lib/content/images'
 
 export async function generateMetadata({
   params,
@@ -14,12 +15,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const fr = locale === 'fr'
-  return {
-    title: fr ? 'Traiteur et événements' : 'Catering & Events',
-    description: fr
+    const title = fr ? 'Traiteur et événements' : 'Catering & Events'
+  const description = fr
       ? 'Service traiteur afghan à Laval : anniversaires, réunions de famille, repas d’entreprise et grandes commandes.'
-      : 'Afghan catering in Laval: birthdays, family gatherings, corporate meals and large group orders.',
-  }
+      : 'Afghan catering in Laval: birthdays, family gatherings, corporate meals and large group orders.'
+  return seoMeta({ key: 'catering', locale: locale as Locale, title, description })
 }
 
 export default async function CateringPage({
@@ -29,7 +29,8 @@ export default async function CateringPage({
 }) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
-  const t = getDict(locale)
+  const images = await getImages()
+  const t = await getResolvedDict(locale)
 
   return (
     <>
@@ -37,7 +38,7 @@ export default async function CateringPage({
         eyebrow={t.catering.eyebrow}
         title={t.catering.title}
         lede={t.catering.support}
-        image="DSC09446"
+        image={images['page.catering']}
       />
 
       <CateringFilm locale={locale} />
@@ -61,7 +62,7 @@ export default async function CateringPage({
 
           <div className="mt-10">
             <Picture
-              id="DSC09453"
+              id={images['catering.inline']}
               crop="ed"
               alt={
                 locale === 'fr'

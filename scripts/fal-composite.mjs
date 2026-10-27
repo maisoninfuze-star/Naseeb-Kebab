@@ -41,7 +41,7 @@ import path from 'node:path'
 import sharp from 'sharp'
 
 const SRC_DIR = '/Users/inder/Claude/Projects/Naseeb Kebab/drive-download-20260721T021114Z-1-001'
-const OUT_DIR = path.resolve(process.cwd(), 'public/img-composited')
+const OUT_DIR = path.resolve(process.cwd(), 'pipeline/img-composited')
 const BG_DIR = path.resolve(process.cwd(), '.cache/backgrounds')
 
 /**

@@ -3,13 +3,13 @@
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { type Locale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
-import { byCategory, formatPrice } from '@/data/menu'
+import { MENU, formatPrice, type MenuItem } from '@/data/menu'
 import { CONFIRMED } from '@/data/site'
 import { registerGsap, gsap, prefersReducedMotion } from '@/lib/motion'
 import Picture from '@/components/ui/Picture'
 import { RevealLines } from '@/components/ui/Reveal'
 import { track, trackOnce } from '@/lib/analytics'
+import { useDict } from '@/components/DictProvider'
 
 /**
  * SHARING PLATTERS — EXPANDING TABLE REVEAL
@@ -25,11 +25,13 @@ import { track, trackOnce } from '@/lib/analytics'
  * are still to be confirmed. Inventing a platter description for a $161 item
  * would be the single most damaging thing this page could do.
  */
-export default function Platters({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+export default function Platters({ locale, menu }: { locale: Locale; menu?: MenuItem[] }) {
+  const t = useDict(locale)
   const root = useRef<HTMLElement>(null)
   const frame = useRef<HTMLDivElement>(null)
-  const combos = byCategory('partager')
+  const combos = (menu ?? MENU)
+    .filter((i) => i.category === 'partager' && i.available)
+    .sort((a, b) => a.order - b.order)
 
   // Routes to the /order chooser rather than jumping to one platform:
   // delivery goes to DoorDash or Uber Eats, pickup is a phone call.
@@ -140,7 +142,7 @@ export default function Platters({ locale }: { locale: Locale }) {
             >
               <div className="flex items-baseline justify-between gap-6">
                 <h3 className="text-[length:var(--text-heading)] text-cream transition-colors group-hover:text-ember">
-                  {combo.nameFr}
+                  {locale === 'fr' ? combo.nameFr : combo.nameEn}
                 </h3>
                 <span className="shrink-0 font-body text-sm tabular-nums text-sand">
                   {formatPrice(combo.price, locale)}

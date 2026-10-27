@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { type Locale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 import EditorialSplitHero from '@/components/ui/EditorialSplitHero'
+import { getResolvedDict } from '@/lib/content/dict'
 
 /**
  * The two client-supplied films, each in an editorial split frame.
@@ -14,8 +14,8 @@ import EditorialSplitHero from '@/components/ui/EditorialSplitHero'
  * FR/EN wording the restaurant already approved is preserved verbatim.
  */
 
-export function CateringFilm({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+export async function CateringFilm({ locale }: { locale: Locale }) {
+  const t = await getResolvedDict(locale)
   const fr = locale === 'fr'
 
   return (
@@ -51,8 +51,8 @@ export function CateringFilm({ locale }: { locale: Locale }) {
   )
 }
 
-export function StoryFilm({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+export async function StoryFilm({ locale }: { locale: Locale }) {
+  const t = await getResolvedDict(locale)
 
   return (
     <EditorialSplitHero

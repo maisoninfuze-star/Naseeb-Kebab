@@ -3,10 +3,10 @@
 import Link from 'next/link'
 import { useEffect, useRef } from 'react'
 import { type Locale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 import { registerGsap, gsap, prefersReducedMotion } from '@/lib/motion'
 import Picture from '@/components/ui/Picture'
 import { RevealLines } from '@/components/ui/Reveal'
+import {useDict, useImage} from '@/components/DictProvider'
 
 /**
  * OUR STORY teaser — CURTAIN MASK REVEAL + multi-speed parallax.
@@ -18,7 +18,7 @@ import { RevealLines } from '@/components/ui/Reveal'
  * placeholder for the owner's own words.
  */
 export default function StoryTeaser({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+  const t = useDict(locale)
   const root = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export default function StoryTeaser({ locale }: { locale: Locale }) {
         <div data-story-img className="relative md:col-span-5 md:col-start-1">
           <div className="relative overflow-hidden">
             <Picture
-              id="DSC09509"
+              id={useImage('home.story')}
               crop="ed"
               alt=""
               sizes="(max-width: 768px) 90vw, 40vw"

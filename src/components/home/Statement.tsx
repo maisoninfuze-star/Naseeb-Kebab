@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from 'react'
 import { type Locale } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 import { registerGsap, gsap, prefersReducedMotion } from '@/lib/motion'
 import { RevealLines } from '@/components/ui/Reveal'
+import { useDict } from '@/components/DictProvider'
 
 /**
  * EDITORIAL BRAND STATEMENT — the one warm-cream section on the homepage.
@@ -15,7 +15,7 @@ import { RevealLines } from '@/components/ui/Reveal'
  * full width, then the lines follow it in.
  */
 export default function Statement({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+  const t = useDict(locale)
   const root = useRef<HTMLElement>(null)
   const rule = useRef<HTMLSpanElement>(null)
 

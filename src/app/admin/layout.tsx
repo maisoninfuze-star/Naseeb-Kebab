@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Manrope } from 'next/font/google'
+import { passcodeAuthEnabled } from '@/lib/admin-auth'
+import { signOut } from './actions'
 import '../globals.css'
 
 const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope', display: 'swap' })
@@ -15,6 +17,8 @@ export const metadata: Metadata = {
 const NAV = [
   { href: '/admin', label: 'Aperçu / Overview' },
   { href: '/admin/menu', label: 'Menu' },
+  { href: '/admin/photos', label: 'Photos' },
+  { href: '/admin/text', label: 'Textes / Copy' },
   { href: '/admin/inquiries', label: 'Demandes / Inquiries' },
   { href: '/admin/settings', label: 'Réglages / Settings' },
 ]
@@ -56,6 +60,20 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               >
                 ← Voir le site
               </Link>
+
+              {/* Only meaningful on the passcode path — with Supabase Auth the
+                  session is not this cookie, and with neither configured there
+                  is nothing to sign out of. */}
+              {passcodeAuthEnabled() && (
+                <form action={signOut}>
+                  <button
+                    type="submit"
+                    className="mt-3 block min-h-11 px-3 text-xs text-sand/50 transition-colors hover:text-ember"
+                  >
+                    Se déconnecter
+                  </button>
+                </form>
+              )}
             </nav>
           </aside>
 

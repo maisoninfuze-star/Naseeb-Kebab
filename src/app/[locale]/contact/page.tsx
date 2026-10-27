@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { isLocale } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
+import {isLocale, seoMeta, type Locale} from '@/lib/i18n'
 import { CONFIRMED } from '@/data/site'
 import PageHeader from '@/components/ui/PageHeader'
 import CateringForm from '@/components/ui/CateringForm'
+import { getResolvedDict } from '@/lib/content/dict'
+import { getImages } from '@/lib/content/images'
 
 export async function generateMetadata({
   params,
@@ -13,12 +14,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const fr = locale === 'fr'
-  return {
-    title: 'Contact',
-    description: fr
+    const title = 'Contact'
+  const description = fr
       ? 'Joindre Naseeb Kabab à Laval — téléphone, courriel et demandes de groupe.'
-      : 'Get in touch with Naseeb Kabab in Laval — phone, email and group enquiries.',
-  }
+      : 'Get in touch with Naseeb Kabab in Laval — phone, email and group enquiries.'
+  return seoMeta({ key: 'contact', locale: locale as Locale, title, description })
 }
 
 export default async function ContactPage({
@@ -28,7 +28,8 @@ export default async function ContactPage({
 }) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
-  const t = getDict(locale)
+  const images = await getImages()
+  const t = await getResolvedDict(locale)
   const fr = locale === 'fr'
 
   return (
@@ -41,7 +42,7 @@ export default async function ContactPage({
             ? 'Pour une réservation de groupe, une commande spéciale ou une question — le téléphone reste le plus rapide.'
             : 'For a group booking, a special order or a question — the phone is still fastest.'
         }
-        image="DSC09513"
+        image={images['page.contact']}
       />
 
       <section className="gutter grid gap-14 py-16 md:grid-cols-12 md:py-24">
@@ -53,7 +54,7 @@ export default async function ContactPage({
             </a>
           </p>
 
-          <h2 className="eyebrow mt-10 text-ember">Courriel</h2>
+          <h2 className="eyebrow mt-10 text-ember">{locale === 'fr' ? 'Courriel' : 'Email'}</h2>
           <p className="mt-4 text-sm">
             <a href={`mailto:${CONFIRMED.email}`} className="break-all text-cream hover:text-ember">
               {CONFIRMED.email}

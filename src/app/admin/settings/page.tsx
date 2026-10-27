@@ -1,65 +1,43 @@
-import { CONFIRMED, UNCONFIRMED } from '@/data/site'
+import { CONFIRMED } from '@/data/site'
+import { getSettings } from '@/lib/content/resolve'
+import SettingsForm from './SettingsForm'
 
 export const dynamic = 'force-dynamic'
 
 /**
- * Settings.
+ * Settings — everything on the public site that is not the menu.
  *
- * Split into what the restaurant HAS published (confirmed, safe on the site)
- * and what it has NOT (blank, and blank on the site too). The second list is
- * the important one — each empty value is currently a visible gap for a
- * customer, and the note says which.
+ * Still split into what the restaurant HAS published and what it has not, but
+ * the second list is now the form rather than a description of a form. The
+ * "how to edit" section that used to point at `src/data/site.ts` and a
+ * not-yet-existing Supabase table is gone: this screen is the answer to it.
+ *
+ * CONFIRMED stays read-only on purpose. Name, address, phone and email are
+ * wired into the JSON-LD, the sitemap and the Google Business listing; changing
+ * them is a deploy, not a text field, and a typo here would silently break
+ * local SEO.
  */
-const PENDING: { key: keyof typeof UNCONFIRMED; label: string; impact: string }[] = [
-  {
-    key: 'hours',
-    label: 'Heures d’ouverture',
-    impact:
-      'Le site affiche « Heures à confirmer — appelez-nous » au pied de page, sur la page Nous trouver et dans le menu de navigation. Aucune heure n’a été devinée.',
-  },
-  {
-    key: 'orderingUrl',
-    label: 'Lien de commande en ligne',
-    impact:
-      'Tous les boutons « Commander » composent le numéro de téléphone. Dès qu’un lien est fourni, ils redirigent vers la plateforme en conservant les paramètres de campagne.',
-  },
-  {
-    key: 'instagram',
-    label: 'Instagram',
-    impact: 'La section « Nous suivre » du pied de page affiche un tiret.',
-  },
-  {
-    key: 'facebook',
-    label: 'Facebook',
-    impact: 'La section « Nous suivre » du pied de page affiche un tiret.',
-  },
-  {
-    key: 'halal',
-    label: 'Statut halal',
-    impact:
-      'Aucune mention halal n’apparaît nulle part sur le site. À n’activer qu’une fois confirmé par écrit — c’est une affirmation vérifiable par le client.',
-  },
-  {
-    key: 'parking',
-    label: 'Stationnement',
-    impact: 'La section stationnement est masquée sur la page Nous trouver.',
-  },
-  {
-    key: 'foundedYear',
-    label: 'Année d’ouverture',
-    impact: 'La page Notre histoire indique « à compléter ».',
-  },
-]
+export default async function AdminSettings() {
+  const settings = await getSettings()
 
-export default function AdminSettings() {
   return (
     <div className="max-w-3xl">
       <h1 className="font-body text-2xl font-semibold">Réglages</h1>
+      <p className="mt-2 text-sm leading-relaxed text-sand/60">
+        Tout ce qui n’est pas le menu. Chaque enregistrement est publié
+        immédiatement, sans redéploiement.
+      </p>
 
-      <section className="mt-10">
-        <h2 className="font-body text-lg font-semibold">Confirmé</h2>
-        <p className="mt-2 text-sm text-sand/60">
-          Repris de naseebkabab.shop. Publié tel quel sur le site.
+      <SettingsForm settings={settings} />
+
+      <section className="mt-14">
+        <h2 className="border-b border-cream/10 pb-2 font-body text-lg font-semibold">
+          Confirmé — non modifiable ici
+        </h2>
+        <p className="mt-3 text-sm leading-relaxed text-sand/60">
+          Ces valeurs alimentent aussi les données structurées Google et la fiche
+          d’établissement. Elles se modifient dans le code, pour qu’une faute de frappe
+          ne casse pas le référencement local en silence.
         </p>
         <dl className="mt-5 space-y-px">
           <Row label="Nom" value={CONFIRMED.name} />
@@ -71,39 +49,6 @@ export default function AdminSettings() {
           <Row label="Téléphone" value={CONFIRMED.phoneDisplay} />
           <Row label="Courriel" value={CONFIRMED.email} />
         </dl>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="font-body text-lg font-semibold">À fournir</h2>
-        <p className="mt-2 text-sm leading-relaxed text-sand/60">
-          Rien de tout cela n’a été inventé. Chaque ligne décrit ce que le visiteur voit
-          actuellement à la place.
-        </p>
-
-        <ul className="mt-5 space-y-px">
-          {PENDING.map((p) => (
-            <li key={p.key} className="bg-obsidian/50 p-4">
-              <div className="flex items-baseline gap-3">
-                <span className="font-medium">{p.label}</span>
-                <span className="rounded bg-ember/20 px-2 py-0.5 text-[0.65rem] uppercase tracking-wider text-ember">
-                  vide
-                </span>
-              </div>
-              <p className="mt-2 text-sm leading-relaxed text-sand/70">{p.impact}</p>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section className="mt-12">
-        <h2 className="font-body text-lg font-semibold">Comment modifier</h2>
-        <p className="mt-3 text-sm leading-relaxed text-sand/70">
-          Ces valeurs vivent dans <code className="text-brass">src/data/site.ts</code>. Une
-          fois Supabase branché, la table{' '}
-          <code className="text-brass">site_settings</code> les remplace sans redéploiement
-          — voir <code className="text-brass">supabase/schema.sql</code> et le guide du
-          propriétaire (<code className="text-brass">DOCS/OWNER-GUIDE.md</code>).
-        </p>
       </section>
     </div>
   )

@@ -60,3 +60,63 @@ export function swapLocale(pathname: string, next: Locale) {
   const full = rest ? `${base}/${rest}` : base
   return hash ? `${full}#${hash}` : full
 }
+
+/**
+ * Per-page canonical + hreflang, plus locale-correct OpenGraph/Twitter.
+ *
+ * ═══════════════════════════════════════════════════════════════════
+ * WHY THIS EXISTS
+ * ═══════════════════════════════════════════════════════════════════
+ * The root locale layout used to set `alternates.canonical = /${locale}`. In
+ * the App Router a layout's `alternates` is inherited verbatim by every child
+ * page that does not redefine it — Next does NOT synthesise a per-route
+ * canonical. So every interior page inherited the HOMEPAGE as its canonical and
+ * its hreflang, telling Google eight distinct pages were all duplicates of the
+ * home page. They dropped out of the index, and it contradicted the sitemap.
+ *
+ * Every `generateMetadata` now calls this with its own route key, so canonical
+ * points at THIS page and fr/en alternates point at each other — never the
+ * home page. OG title/description are localised per page too, so a shared
+ * `/menu` link no longer previews with the home-page copy.
+ */
+export function seoMeta({
+  key,
+  locale,
+  title,
+  description,
+}: {
+  key: RouteKey
+  locale: Locale
+  title: string
+  description: string
+}) {
+  const fr = locale === 'fr'
+  return {
+    title,
+    description,
+    alternates: {
+      canonical: path(key, locale),
+      languages: {
+        fr: path(key, 'fr'),
+        en: path(key, 'en'),
+        'x-default': path(key, DEFAULT_LOCALE),
+      },
+    },
+    openGraph: {
+      type: 'website' as const,
+      locale: fr ? 'fr_CA' : 'en_CA',
+      alternateLocale: fr ? 'en_CA' : 'fr_CA',
+      siteName: 'Naseeb Kabab',
+      url: path(key, locale),
+      title,
+      description,
+      images: [{ url: '/brand/og-logo.jpg', width: 1200, height: 1200, alt: 'Naseeb Kabab' }],
+    },
+    twitter: {
+      card: 'summary_large_image' as const,
+      title,
+      description,
+      images: ['/brand/og-logo.jpg'],
+    },
+  }
+}

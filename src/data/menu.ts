@@ -234,13 +234,12 @@ export const MENU: MenuItem[] = [
   {
     id: 'bamyan-kabab', category: 'kababs',
     nameFr: 'Bamyan Kabab', nameEn: 'Bamyan Kabab',
-    descFr: null, descEn: null, price: 0,
+    // Price + description owner-confirmed from her menu PDF (2026-10).
+    descFr: 'Filet mignon et poitrine de poulet.',
+    descEn: 'Filet mignon and chicken breast.',
+    price: 28,
     image: 'DSC09451', imageConfidence: 'high',
-    // NEW dish from the owner's photo list (2026-07-22). Photo confirmed;
-    // available:false until the owner supplies a price — a real dish must never
-    // show a fabricated or 0,00 $ price.
-    available: false, featured: false, order: 3,
-    needsReview: 'NOUVEAU (liste du propriétaire) — photo confirmée, PRIX REQUIS avant publication.',
+    available: true, featured: false, order: 3,
   },
   {
     id: 'barg-kabab', category: 'kababs',
@@ -407,10 +406,12 @@ export const MENU: MenuItem[] = [
   {
     id: 'tandoori-poulet', category: 'currys',
     nameFr: 'Tandoori Au Poulet', nameEn: 'Chicken Tandoori',
-    descFr: null, descEn: null, price: 0,
+    // Price + description owner-confirmed from her menu PDF (2026-10).
+    descFr: 'Morceaux de poulet marinés dans un mélange d’épices et de sauce tandoori.',
+    descEn: 'Chicken pieces marinated in a tandoori spice blend.',
+    price: 19,
     image: 'DSC09518', imageConfidence: 'high',
-    available: false, featured: false, order: 8,
-    needsReview: 'NOUVEAU (liste du propriétaire) — photo confirmée, PRIX REQUIS avant publication.',
+    available: true, featured: false, order: 8,
   },
   {
     id: 'morgh-pulao', category: 'currys',
@@ -429,11 +430,11 @@ export const MENU: MenuItem[] = [
   {
     id: 'combo-dostan', category: 'partager',
     nameFr: 'Combo Dostan', nameEn: 'Combo Dostan',
-    // Verbatim from the restaurant's own DoorDash listing.
+    // Contents owner-confirmed from her menu PDF (2026-10).
     descFr:
-      'Combo 2 personnes : kabab de poulet, kobidah de bœuf, tikka d’agneau et kobidah de poulet. Servi avec riz et salade.',
+      'Pour 2 personnes : 1 kabab de poulet, 1 kobidah de bœuf, 1 tikka kabab et 1 kobidah de poulet.',
     descEn:
-      'Combo for 2: chicken kabab, beef kobidah, lamb tikka kabab and chicken kobidah. Served with rice and salad.',
+      'For 2: 1 chicken kabab, 1 beef kobidah, 1 tikka kabab and 1 chicken kobidah.',
     price: 51.7,
     image: 'rice-combo-dostan', imageConfidence: 'high',
     available: true, featured: true, order: 1,
@@ -441,18 +442,26 @@ export const MENU: MenuItem[] = [
   {
     id: 'combo-naseeb', category: 'partager',
     nameFr: 'Naseeb Combo', nameEn: 'Naseeb Combo',
-    descFr: null, descEn: null, price: 104.5,
+    // Contents owner-confirmed from her menu PDF (2026-10).
+    descFr:
+      'Pour 4 personnes : 2 kobidah de bœuf, 1 kobidah de poulet, 2 chaplee, 3 chopan et 1 kabab de poulet.',
+    descEn:
+      'For 4: 2 beef kobidah, 1 chicken kobidah, 2 chaplee, 3 chopan and 1 chicken kabab.',
+    price: 104.5,
     image: 'rice-combo-naseeb', imageConfidence: 'high',
     available: true, featured: true, order: 2,
   },
   {
     id: 'combo-watan', category: 'partager',
     nameFr: 'Watan Combo', nameEn: 'Watan Combo',
-    descFr: null, descEn: null, price: 161.7,
+    // Contents owner-confirmed from her menu PDF (2026-10); matches the plated photo.
+    descFr:
+      'Pour 6 personnes : 3 kobidah de bœuf, 3 kobidah de poulet, 2 tikka et 1 kabab de poulet, servi avec du riz et 4 morceaux de cuisse de poulet.',
+    descEn:
+      'For 6: 3 beef kobidah, 3 chicken kobidah, 2 tikka and 1 chicken kabab, served with rice and 4 chicken drumsticks.',
+    price: 161.7,
     image: 'rice-combo-watan', imageConfidence: 'high',
     available: true, featured: true, order: 3,
-    needsReview:
-      'Owner-supplied styled image (teal platter + rice bowl). Contents still unpublished — confirm before listing them.',
   },
 
   // ────────────────────── BURGERS ET WRAPS ──────────────────────
@@ -547,7 +556,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'frites', category: 'extras',
     nameFr: 'Frites', nameEn: 'Fries',
-    descFr: null, descEn: null, price: 6.0,
+    descFr: null, descEn: null, price: 7.0,
     image: 'card-frites', imageConfidence: 'medium',
     available: true, featured: false, vegetarian: true, order: 1,
   },

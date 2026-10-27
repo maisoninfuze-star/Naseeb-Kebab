@@ -45,3 +45,6 @@ next-env.d.ts
 /drive-download-*/
 *.CR2
 *.ARW
+
+# Runtime content written by the admin (file storage driver)
+.data/

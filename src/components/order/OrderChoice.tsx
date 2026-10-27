@@ -75,7 +75,7 @@ export default function OrderChoice({
             )}
           </ul>
 
-          <p className="mt-6 text-xs text-sand/45">
+          <p className="mt-6 text-xs text-sand/70">
             {fr
               ? 'Ces liens ouvrent un site externe.'
               : 'These links open an external site.'}
@@ -109,7 +109,7 @@ export default function OrderChoice({
             {phoneDisplay}
           </a>
 
-          <p className="mt-8 text-xs leading-relaxed text-sand/45">
+          <p className="mt-8 text-xs leading-relaxed text-sand/70">
             {fr
               ? 'Aucuns frais de service, et le restaurant reçoit le montant complet.'
               : 'No service fee, and the restaurant receives the full amount.'}

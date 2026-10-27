@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from 'react'
 import { type Locale } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 import { registerGsap, gsap, ScrollTrigger } from '@/lib/motion'
 import Picture from '@/components/ui/Picture'
+import {useDict, useImage} from '@/components/DictProvider'
 
 /**
  * PINNED FIRE SEQUENCE
@@ -17,13 +17,20 @@ import Picture from '@/components/ui/Picture'
  * the three chapters use real plated frames that genuinely read as
  * preparation → grilled → served, and the fire itself is expressed through
  * light: an ember glow that intensifies as you scroll. When the restaurant
- * supplies real charcoal photography, swap `CHAPTER_IMAGES` and nothing else
+ * supplies real charcoal photography, swap the `home.charcoal.*` photo slots in the admin and nothing else
  * needs to change.
  */
-const CHAPTER_IMAGES = ['DSC09467', 'DSC09476', 'DSC09453']
+/** Chapter photos come from the admin's photo slots, in order. */
+const CHAPTER_SLOTS = ['home.charcoal.1', 'home.charcoal.2', 'home.charcoal.3']
 
 export default function CharcoalStory({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+  const t = useDict(locale)
+  // Hooks cannot run in a loop body, so all three are read up front.
+  const chapterImages = [
+    useImage(CHAPTER_SLOTS[0]),
+    useImage(CHAPTER_SLOTS[1]),
+    useImage(CHAPTER_SLOTS[2]),
+  ]
   const root = useRef<HTMLElement>(null)
   const glow = useRef<HTMLDivElement>(null)
 
@@ -55,8 +62,8 @@ export default function CharcoalStory({ locale }: { locale: Locale }) {
       tl.fromTo(glow.current, { opacity: 0.18, scale: 0.9 }, { opacity: 0.5, scale: 1.25, ease: 'none' }, 0)
 
       // Cross-fade the three visuals and their chapters.
-      CHAPTER_IMAGES.forEach((_, i) => {
-        const at = i / CHAPTER_IMAGES.length
+      CHAPTER_SLOTS.forEach((_, i) => {
+        const at = i / CHAPTER_SLOTS.length
         if (i > 0) {
           tl.to(`[data-fig="${i - 1}"]`, { opacity: 0, duration: 0.12 }, at)
           tl.to(`[data-chapter="${i - 1}"]`, { opacity: 0, y: -18, duration: 0.12 }, at)
@@ -109,7 +116,7 @@ export default function CharcoalStory({ locale }: { locale: Locale }) {
           },
         )
 
-        CHAPTER_IMAGES.forEach((_, i) => {
+        CHAPTER_SLOTS.forEach((_, i) => {
           const fig = section.querySelector<HTMLElement>(`[data-fig="${i}"]`)
           const chap = section.querySelector<HTMLElement>(`[data-chapter="${i}"]`)
 
@@ -225,7 +232,7 @@ export default function CharcoalStory({ locale }: { locale: Locale }) {
                 style={{ opacity: i === 0 ? 1 : undefined }}
               >
                 <Picture
-                  id={CHAPTER_IMAGES[i]}
+                  id={chapterImages[i]}
                   crop="ed"
                   alt=""
                   sizes="(max-width: 768px) 90vw, 45vw"

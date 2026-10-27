@@ -17,10 +17,10 @@ export const CONFIRMED = {
     postal: 'H7V 3T4',
     country: 'CA',
   },
-  // Updated to the number on the restaurant's DoorDash listing (owner-confirmed
-  // 2026-07). The old 450-681-2222 came from naseebkabab.shop and was superseded.
-  phone: '+15147422220',
-  phoneDisplay: '+1 514-742-2220',
+  // 450-681-2222 — owner-confirmed as the number to use everywhere (2026-10).
+  // This reverts the 514-742-2220 DoorDash number used earlier.
+  phone: '+14506812222',
+  phoneDisplay: '+1 450-681-2222',
   email: 'naseebkabab.shop@gmail.com',
   currentSite: 'https://naseebkabab.shop',
 } as const

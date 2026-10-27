@@ -1,11 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { isLocale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
+import {isLocale, path, seoMeta, type Locale} from '@/lib/i18n'
 import { CONFIRMED, DELIVERY, PICKUP_TEL } from '@/data/site'
 import PageHeader from '@/components/ui/PageHeader'
 import OrderChoice from '@/components/order/OrderChoice'
+import { getResolvedDict } from '@/lib/content/dict'
+import { getImages } from '@/lib/content/images'
 
 export async function generateMetadata({
   params,
@@ -14,12 +15,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const fr = locale === 'fr'
-  return {
-    title: fr ? 'Commander' : 'Order',
-    description: fr
+    const title = fr ? 'Commander' : 'Order'
+  const description = fr
       ? 'Livraison par DoorDash ou Uber Eats. Pour emporter, appelez le restaurant directement.'
-      : 'Delivery via DoorDash or Uber Eats. For pickup, call the restaurant directly.',
-  }
+      : 'Delivery via DoorDash or Uber Eats. For pickup, call the restaurant directly.'
+  return seoMeta({ key: 'order', locale: locale as Locale, title, description })
 }
 
 /**
@@ -46,7 +46,8 @@ export default async function OrderPage({
 }) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
-  const t = getDict(locale)
+  const images = await getImages()
+  const t = await getResolvedDict(locale)
   const fr = locale === 'fr'
 
   return (
@@ -59,7 +60,7 @@ export default async function OrderPage({
             ? 'Livraison par DoorDash ou Uber Eats. Pour une commande à emporter, appelez-nous directement.'
             : 'Delivery through DoorDash or Uber Eats. For pickup, call us directly.'
         }
-        image="DSC09484"
+        image={images['page.order']}
       />
 
       <OrderChoice

@@ -3,11 +3,11 @@
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { type Locale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 import { CONFIRMED, UNCONFIRMED, MAPS_DIRECTIONS, MAPS_URL } from '@/data/site'
 import { registerGsap, gsap, prefersReducedMotion } from '@/lib/motion'
 import Picture from '@/components/ui/Picture'
 import { track } from '@/lib/analytics'
+import {useDict, useImage} from '@/components/DictProvider'
 
 /**
  * SPLIT-SCREEN CLOSING REVEAL
@@ -17,8 +17,20 @@ import { track } from '@/lib/analytics'
  * page, so the CTAs are the last thing to settle and the first thing you see
  * once it has.
  */
-export default function VisitSplit({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+/**
+ * `hours` carries the owner's edited opening hours. Optional, falling back to
+ * the shipped `UNCONFIRMED.hours`, so a page that has not been threaded still
+ * renders the shipped value rather than the "to be confirmed" placeholder.
+ */
+export default function VisitSplit({
+  locale,
+  hours,
+}: {
+  locale: Locale
+  hours?: Record<string, string> | null
+}) {
+  const openingHours = hours === undefined ? UNCONFIRMED.hours : hours
+  const t = useDict(locale)
   const root = useRef<HTMLElement>(null)
 
   // Routes to the /order chooser rather than jumping to one platform:
@@ -79,9 +91,9 @@ export default function VisitSplit({ locale }: { locale: Locale }) {
             <div data-detail>
               <dt className="eyebrow text-sand/50">{t.visit.hours}</dt>
               <dd className="mt-2 text-base text-sand/70">
-                {/* Hours are not published anywhere. Not guessed. */}
-                {UNCONFIRMED.hours
-                  ? Object.entries(UNCONFIRMED.hours).map(([d, h]) => (
+                {/* Never guessed — an unset value stays the honest placeholder. */}
+                {openingHours
+                  ? Object.entries(openingHours).map(([d, h]) => (
                       <span key={d} className="block">
                         {d} · {h}
                       </span>
@@ -117,7 +129,7 @@ export default function VisitSplit({ locale }: { locale: Locale }) {
         {/* Right — the image and the conversion actions */}
         <div data-half="right" className="relative min-h-[52svh]">
           <Picture
-            id="DSC09463"
+            id={useImage('home.visit')}
             crop="ed"
             fill
             alt={

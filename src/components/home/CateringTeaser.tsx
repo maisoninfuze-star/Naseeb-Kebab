@@ -3,13 +3,13 @@
 import { useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { type Locale, path } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 import { registerGsap, gsap, prefersReducedMotion } from '@/lib/motion'
 import Picture from '@/components/ui/Picture'
+import {useDict, useImage} from '@/components/DictProvider'
 
 /** CATERING & EVENTS teaser — IMAGE CURTAIN REVEAL. */
 export default function CateringTeaser({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+  const t = useDict(locale)
   const root = useRef<HTMLElement>(null)
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function CateringTeaser({ locale }: { locale: Locale }) {
         <div className="md:col-span-6 md:col-start-7">
           <div className="relative overflow-hidden">
             <Picture
-              id="DSC09446"
+              id={useImage('home.catering')}
               crop="ed"
               alt={
                 locale === 'fr'

@@ -70,8 +70,53 @@ create table if not exists public.menu_overrides (
   display_order integer,
   -- Cleared by the owner once they have confirmed a photo↔dish match.
   review_note  text,
+  -- These three MUST exist: saveDish always writes hidden + category, and the
+  -- admin can attach an image-confidence badge. Without them PostgREST rejects
+  -- the upsert (PGRST204) and — because the app now checks the error — the save
+  -- surfaces as failed instead of silently reporting success.
+  hidden           boolean,
+  category         text,
+  image_confidence text,
   updated_at   timestamptz not null default now()
 );
+
+-- Idempotent guards so re-running this file on an existing project adds the
+-- columns rather than needing a manual migration.
+alter table public.menu_overrides add column if not exists hidden           boolean;
+alter table public.menu_overrides add column if not exists category         text;
+alter table public.menu_overrides add column if not exists image_confidence text;
+
+-- Dishes the owner CREATED in the admin (no shipped counterpart). Columns are
+-- intentionally the exact camelCase field names of MenuAddition, quoted, so the
+-- store can `insert(item)` and `select('*') as MenuAddition[]` with no mapping —
+-- unlike menu_overrides, which maps through snake_case. Keep the two in sync
+-- with src/lib/content/types.ts if MenuAddition changes.
+create table if not exists public.menu_additions (
+  id          text primary key,
+  category    text not null,
+  "nameFr"    text not null,
+  "nameEn"    text not null,
+  "descFr"    text,
+  "descEn"    text,
+  price       numeric(10,2) not null,
+  image       text,
+  available   boolean not null default true,
+  featured    boolean not null default false,
+  vegetarian  boolean not null default false,
+  spicy       boolean not null default false,
+  "order"     integer not null default 0,
+  "createdAt" timestamptz not null default now()
+);
+
+alter table public.menu_additions enable row level security;
+
+drop policy if exists "public read additions" on public.menu_additions;
+create policy "public read additions"
+  on public.menu_additions for select to anon, authenticated using (true);
+
+drop policy if exists "authed write additions" on public.menu_additions;
+create policy "authed write additions"
+  on public.menu_additions for all to authenticated using (true) with check (true);
 
 create table if not exists public.site_settings (
   key        text primary key,

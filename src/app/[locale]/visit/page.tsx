@@ -1,10 +1,12 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { isLocale } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
-import { CONFIRMED, UNCONFIRMED, MAPS_DIRECTIONS, MAPS_URL } from '@/data/site'
+import {isLocale, seoMeta, type Locale} from '@/lib/i18n'
+import { CONFIRMED, MAPS_DIRECTIONS, MAPS_URL } from '@/data/site'
+import { getSettings } from '@/lib/content/resolve'
 import PageHeader from '@/components/ui/PageHeader'
 import VisitSplit from '@/components/home/VisitSplit'
+import { getResolvedDict } from '@/lib/content/dict'
+import { getImages } from '@/lib/content/images'
 
 export async function generateMetadata({
   params,
@@ -13,12 +15,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params
   const fr = locale === 'fr'
-  return {
-    title: fr ? 'Nous trouver' : 'Visit Us',
-    description: fr
+    const title = fr ? 'Nous trouver' : 'Visit Us'
+  const description = fr
       ? `Naseeb Kabab — ${CONFIRMED.address.street}, ${CONFIRMED.address.city}. Restaurant afghan, kababs sur charbon de bois.`
-      : `Naseeb Kabab — ${CONFIRMED.address.street}, ${CONFIRMED.address.city}. Afghan restaurant, charcoal-grilled kababs.`,
-  }
+      : `Naseeb Kabab — ${CONFIRMED.address.street}, ${CONFIRMED.address.city}. Afghan restaurant, charcoal-grilled kababs.`
+  return seoMeta({ key: 'visit', locale: locale as Locale, title, description })
 }
 
 export default async function VisitPage({
@@ -28,12 +29,14 @@ export default async function VisitPage({
 }) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
-  const t = getDict(locale)
+  const images = await getImages()
+  const t = await getResolvedDict(locale)
   const fr = locale === 'fr'
+  const settings = await getSettings()
 
   return (
     <>
-      <PageHeader eyebrow={t.visit.eyebrow} title={t.visit.title} image="DSC09476" />
+      <PageHeader eyebrow={t.visit.eyebrow} title={t.visit.title} image={images['page.visit']} />
 
       <section className="gutter py-16 md:py-24">
         <div className="grid gap-10 md:grid-cols-3">
@@ -80,15 +83,25 @@ export default async function VisitPage({
 
           <div>
             <h2 className="eyebrow text-ember">{t.visit.hours}</h2>
-            {/* Not published by the restaurant anywhere. Not guessed. */}
-            <p className="mt-4 text-base text-sand/70">
-              {UNCONFIRMED.hours ? '' : t.visit.hoursPending}
-            </p>
+            {/* Never guessed — unset stays the honest placeholder. This branch
+                used to render an empty string when hours existed, which was
+                invisible only because they never did. */}
+            <div className="mt-4 text-base text-sand/70">
+              {settings.hours ? (
+                Object.entries(settings.hours).map(([day, hrs]) => (
+                  <span key={day} className="block">
+                    {day} · {hrs}
+                  </span>
+                ))
+              ) : (
+                <p>{t.visit.hoursPending}</p>
+              )}
+            </div>
 
-            {UNCONFIRMED.parking && (
+            {settings.parking && (
               <>
                 <h2 className="eyebrow mt-8 text-ember">{t.visit.parking}</h2>
-                <p className="mt-4 text-sm text-sand/70">{UNCONFIRMED.parking}</p>
+                <p className="mt-4 text-sm text-sand/70">{settings.parking}</p>
               </>
             )}
           </div>
@@ -108,7 +121,7 @@ export default async function VisitPage({
         </div>
       </section>
 
-      <VisitSplit locale={locale} />
+      <VisitSplit locale={locale} hours={settings.hours} />
     </>
   )
 }

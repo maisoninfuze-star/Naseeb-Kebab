@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { isLocale } from '@/lib/i18n'
+import { getMenu, getSettings } from '@/lib/content/resolve'
 
 import PlateHero from '@/components/home/PlateHero'
 import Statement from '@/components/home/Statement'
@@ -46,18 +47,22 @@ export default async function HomePage({
 }) {
   const { locale } = await params
   if (!isLocale(locale)) notFound()
+  const { hours } = await getSettings()
+  // Resolved menu so the homepage shows the owner's edited prices/names and
+  // hides unavailable dishes — the same source /menu uses, not the static import.
+  const menu = await getMenu()
 
   return (
     <>
       <PlateHero locale={locale} />
       <Statement locale={locale} />
       <CharcoalStory locale={locale} />
-      <Platters locale={locale} />
-      <MenuPreview locale={locale} />
+      <Platters locale={locale} menu={menu} />
+      <MenuPreview locale={locale} menu={menu} />
       <StoryTeaser locale={locale} />
       <CateringTeaser locale={locale} />
       <Testimonials locale={locale} />
-      <VisitSplit locale={locale} />
+      <VisitSplit locale={locale} hours={hours} />
     </>
   )
 }

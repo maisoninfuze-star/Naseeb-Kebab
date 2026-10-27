@@ -6,15 +6,16 @@ import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 
 import { type Locale, path, swapLocale, type RouteKey } from '@/lib/i18n'
-import { getDict } from '@/data/dictionary'
 import { CONFIRMED, UNCONFIRMED } from '@/data/site'
 import { cn } from '@/lib/utils'
 import { track } from '@/lib/analytics'
 import AfghanFlag from '@/components/ui/AfghanFlag'
+import { useDict } from '@/components/DictProvider'
+import type { Dict } from '@/data/dictionary'
 
 const EASE = [0.22, 1, 0.36, 1] as const
 
-type Item = { key: RouteKey; label: keyof ReturnType<typeof getDict>['nav'] }
+type Item = { key: RouteKey; label: keyof Dict['nav'] }
 
 /**
  * Desktop navigation is SPLIT around the centred wordmark.
@@ -47,8 +48,16 @@ const ALL: Item[] = [
   { key: 'visit', label: 'visit' },
 ]
 
-export default function Nav({ locale }: { locale: Locale }) {
-  const t = getDict(locale)
+/** `hours` optional, falling back to the shipped value — see VisitSplit. */
+export default function Nav({
+  locale,
+  hours,
+}: {
+  locale: Locale
+  hours?: Record<string, string> | null
+}) {
+  const openingHours = hours === undefined ? UNCONFIRMED.hours : hours
+  const t = useDict(locale)
   const pathname = usePathname()
   const [open, setOpen] = useState(false)
   const [compact, setCompact] = useState(false)
@@ -324,7 +333,7 @@ export default function Nav({ locale }: { locale: Locale }) {
                   <a href={`tel:${CONFIRMED.phone}`} className="block hover:text-ember">
                     {CONFIRMED.phoneDisplay}
                   </a>
-                  {!UNCONFIRMED.hours && (
+                  {!openingHours && (
                     <p className="text-sand/60">{t.visit.hoursPending}</p>
                   )}
                 </div>

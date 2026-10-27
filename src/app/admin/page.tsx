@@ -1,7 +1,6 @@
 import Link from 'next/link'
-import { MENU, needsReview } from '@/data/menu'
-import { UNCONFIRMED } from '@/data/site'
-import { isConfigured, serverClient } from '@/lib/supabase/server'
+import { getMenu, getSettings } from '@/lib/content/resolve'
+import { isEphemeral, listInquiries } from '@/lib/content/store'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,27 +11,28 @@ export const dynamic = 'force-dynamic'
  * build could not verify — ambiguous photo matches, missing dish photos,
  * unpublished opening hours, the absent ordering link — is surfaced here so
  * the owner can see exactly what is still unresolved on their own site.
+ *
+ * Every count comes from the RESOLVED content, not the shipped constants. Read
+ * from `MENU` and `UNCONFIRMED` it would keep listing an item as unpriced after
+ * the owner had priced it, and go on demanding hours they had already entered —
+ * a punch list that never shortens is one nobody trusts.
  */
 export default async function AdminHome() {
-  const review = needsReview()
-  const noPhoto = MENU.filter((i) => !i.image)
-  const lowConfidence = MENU.filter((i) => i.imageConfidence === 'low')
+  const [items, settings, inquiries] = await Promise.all([
+    getMenu(),
+    getSettings(),
+    listInquiries(),
+  ])
 
-  const unconfirmedSettings = Object.entries(UNCONFIRMED)
+  const review = items.filter((i) => i.needsReview)
+  const noPhoto = items.filter((i) => !i.image)
+  const lowConfidence = items.filter((i) => i.imageConfidence === 'low')
+  const unpriced = items.filter((i) => !i.price)
+  const newInquiries = inquiries.filter((i) => i.status === 'new').length
+
+  const unconfirmedSettings = Object.entries(settings)
     .filter(([, v]) => v === null)
     .map(([k]) => k)
-
-  let newInquiries = 0
-  let inboxError: string | null = null
-  if (isConfigured) {
-    const supabase = await serverClient()
-    const { count, error } = (await supabase!
-      .from('inquiries')
-      .select('*', { count: 'exact', head: true })
-      .eq('status', 'new')) as { count: number | null; error: { message: string } | null }
-    if (error) inboxError = error.message
-    else newInquiries = count ?? 0
-  }
 
   return (
     <div className="max-w-4xl">
@@ -42,27 +42,37 @@ export default async function AdminHome() {
       </p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Plats au menu" value={MENU.length} />
+        <Stat label="Plats au menu" value={items.length} />
         <Stat label="Photos à vérifier" value={lowConfidence.length} tone="warn" />
         <Stat label="Plats sans photo" value={noPhoto.length} tone="warn" />
         <Stat
           label="Nouvelles demandes"
-          value={isConfigured ? newInquiries : '—'}
+          value={newInquiries}
           tone={newInquiries > 0 ? 'good' : undefined}
         />
       </div>
 
-      {!isConfigured && (
-        <Callout title="Supabase n’est pas configuré">
-          Le site public fonctionne entièrement sans Supabase. Pour activer la boîte de
-          réception des demandes et l’édition du contenu, ajoutez{' '}
-          <code className="text-brass">NEXT_PUBLIC_SUPABASE_URL</code> et{' '}
-          <code className="text-brass">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>, puis exécutez{' '}
-          <code className="text-brass">supabase/schema.sql</code>.
+      {unpriced.length > 0 && (
+        <Callout title={`${unpriced.length} plats sans prix`}>
+          {unpriced.map((i) => i.nameFr).join(', ')} — publiés avec la mention « à venir »
+          plutôt qu’un prix inventé. Renseignez-les dans le Menu avant l’ouverture.
         </Callout>
       )}
 
-      {inboxError && <Callout title="Erreur de lecture des demandes">{inboxError}</Callout>}
+      {/* Only a warning when edits will actually be LOST. The old version fired
+          whenever Supabase was absent and said the inbox and content editing
+          needed it — both work on the file driver, so that read as a fault when
+          nothing was wrong. */}
+      {isEphemeral() && (
+        <Callout title="Les modifications ne seront pas conservées">
+          Cet hébergement a un disque éphémère et aucun Supabase n’est configuré : les
+          modifications et les demandes disparaissent au prochain redémarrage. Ajoutez{' '}
+          <code className="text-brass">NEXT_PUBLIC_SUPABASE_URL</code> et{' '}
+          <code className="text-brass">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>, puis exécutez{' '}
+          <code className="text-brass">supabase/schema.sql</code> — ou hébergez sur un
+          serveur avec disque persistant.
+        </Callout>
+      )}
 
       {/* The punch list. */}
       <section className="mt-12">

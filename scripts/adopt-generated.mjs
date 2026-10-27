@@ -10,7 +10,7 @@ import { readdir, mkdir } from 'node:fs/promises'
 import path from 'node:path'
 import sharp from 'sharp'
 
-const IN = path.resolve(process.cwd(), 'public/img-generated')
+const IN = path.resolve(process.cwd(), 'pipeline/img-generated')
 const OUT = path.resolve(process.cwd(), 'public/img')
 
 /**

@@ -1,7 +1,7 @@
 /**
  * Turn the approved composites into the derivatives the site actually serves.
  *
- * Reads public/img-composited/{id}-{crop}.jpg and writes the same
+ * Reads pipeline/img-composited/{id}-{crop}.jpg and writes the same
  * {id}-{crop}-{width}.{webp,avif} files that `process-images.mjs` produces
  * from the originals, into public/img — so the site picks them up with no
  * component changes at all.
@@ -18,7 +18,7 @@ import { readdir, mkdir } from 'node:fs/promises'
 import path from 'node:path'
 import sharp from 'sharp'
 
-const IN = path.resolve(process.cwd(), 'public/img-composited')
+const IN = path.resolve(process.cwd(), 'pipeline/img-composited')
 const OUT = path.resolve(process.cwd(), 'public/img')
 
 const WIDTHS = {
