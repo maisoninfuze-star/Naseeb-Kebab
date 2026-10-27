@@ -206,4 +206,6 @@ const CAT_LABEL: Record<CategoryId, { fr: string; en: string }> = {
   desserts: { fr: 'Desserts', en: 'Desserts' },
   boissons: { fr: 'Boissons', en: 'Drinks' },
   extras: { fr: 'Extras', en: 'Extras' },
+  'viande-extra': { fr: 'Viande extra', en: 'Extra meat' },
+  'viande-kilo': { fr: 'Viande au kilo', en: 'Meat by the kilo' },
 }

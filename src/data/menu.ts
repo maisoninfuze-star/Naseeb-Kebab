@@ -29,6 +29,8 @@ export type CategoryId =
   | 'desserts'
   | 'boissons'
   | 'extras'
+  | 'viande-extra'
+  | 'viande-kilo'
 
 export interface MenuItem {
   /** Stable internal id — never shown, safe to reference from the admin. */
@@ -105,8 +107,10 @@ export const CATEGORIES: Category[] = [
     id: 'burgers',
     nameFr: 'Burgers et wraps',
     nameEn: 'Burgers & Wraps',
-    blurbFr: 'La même viande grillée, format rapide.',
-    blurbEn: 'The same grilled meat, made quick.',
+    // 'Servis avec frites' + the boxed Spécial Rentrée note, verbatim from the
+    // owner's printed menu (2026-10). The special is time-limited — remove when it ends.
+    blurbFr: 'Servis avec frites. Spécial rentrée : 7 $ chacun jusqu’à 14 h — burger poulet, cheeseburger, wrap poulet, wrap bœuf. Une carte étudiante peut être exigée.',
+    blurbEn: 'Served with fries. Back-to-school special: $7 each until 2 pm — chicken burger, cheeseburger, chicken wrap, beef wrap. A student card may be required.',
     order: 5,
   },
   {
@@ -132,6 +136,22 @@ export const CATEGORIES: Category[] = [
     blurbFr: '',
     blurbEn: '',
     order: 8,
+  },
+  {
+    id: 'viande-extra',
+    nameFr: 'Viande extra',
+    nameEn: 'Extra meat',
+    blurbFr: 'La brochette.',
+    blurbEn: 'Per skewer.',
+    order: 9,
+  },
+  {
+    id: 'viande-kilo',
+    nameFr: 'Viande au kilo',
+    nameEn: 'Meat by the kilo',
+    blurbFr: 'Au kilo (1 kg).',
+    blurbEn: 'By the kilo (1 kg).',
+    order: 10,
   },
 ]
 
@@ -594,6 +614,86 @@ export const MENU: MenuItem[] = [
     image: null, imageConfidence: null,
     available: true, featured: false, vegetarian: true, order: 4,
     needsReview: 'Extras show no photo.',
+  },
+  {
+    id: 'kobidah-boeuf-brochette', category: 'viande-extra',
+    nameFr: 'Kobidah Bœuf', nameEn: 'Kobidah Of Beef',
+    descFr: null, descEn: null, price: 8.5,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 1,
+    needsReview: 'Pas de photo sur la carte imprimée.',
+  },
+  {
+    id: 'kobidah-poulet-brochette', category: 'viande-extra',
+    nameFr: 'Kobidah Poulet', nameEn: 'Kobidah Of Chicken',
+    descFr: null, descEn: null, price: 8.5,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 2,
+    needsReview: 'Pas de photo sur la carte imprimée.',
+  },
+  {
+    id: 'poitrine-poulet-brochette', category: 'viande-extra',
+    nameFr: 'Poitrine de Poulet', nameEn: 'Chicken Breast',
+    descFr: null, descEn: null, price: 12,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 3,
+    needsReview: 'Pas de photo sur la carte imprimée.',
+  },
+  {
+    id: 'tikka-brochette', category: 'viande-extra',
+    nameFr: 'Tikka', nameEn: 'Tikka',
+    descFr: null, descEn: null, price: 15,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 4,
+    needsReview: 'Pas de photo sur la carte imprimée.',
+  },
+  {
+    id: 'kobidah-boeuf-kilo', category: 'viande-kilo',
+    nameFr: 'Kobidah Bœuf', nameEn: 'Kobidah Of Beef',
+    descFr: '7 brochettes', descEn: '7 skewers', price: 42,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 1,
+    needsReview: 'Pas de photo sur la carte imprimée.',
+  },
+  {
+    id: 'kobidah-poulet-kilo', category: 'viande-kilo',
+    nameFr: 'Kobidah Poulet', nameEn: 'Kobidah Of Chicken',
+    descFr: '7 brochettes', descEn: '7 skewers', price: 42,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 2,
+    needsReview: 'Pas de photo sur la carte imprimée.',
+  },
+  {
+    id: 'chopan-kilo', category: 'viande-kilo',
+    nameFr: 'Chopan', nameEn: 'Chopan',
+    descFr: '9 morceaux', descEn: '9 pieces', price: 56,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 3,
+    needsReview: 'Pas de photo sur la carte imprimée.',
+  },
+  {
+    id: 'poitrine-poulet-kilo', category: 'viande-kilo',
+    nameFr: 'Poitrine de Poulet', nameEn: 'Chicken Breast',
+    descFr: '4 brochettes', descEn: '4 skewers', price: 56,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 4,
+    needsReview: 'Pas de photo sur la carte imprimée.',
+  },
+  {
+    id: 'tikka-kilo', category: 'viande-kilo',
+    nameFr: 'Tikka', nameEn: 'Tikka',
+    descFr: '4 brochettes', descEn: '4 skewers', price: 56,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 5,
+    needsReview: 'Pas de photo sur la carte imprimée.',
+  },
+  {
+    id: 'cuisses-poulet-kilo', category: 'viande-kilo',
+    nameFr: 'Cuisses de Poulet', nameEn: 'Chicken Thighs',
+    descFr: '9 morceaux', descEn: '9 pieces', price: 38,
+    image: null, imageConfidence: null,
+    available: true, featured: false, order: 6,
+    needsReview: 'Pas de photo sur la carte imprimée.',
   },
 ]
 
