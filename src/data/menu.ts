@@ -140,7 +140,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'samosa', category: 'entrees',
     nameFr: 'Samosa', nameEn: 'Samosa',
-    descFr: null, descEn: null, price: 8.8,
+    descFr: null, descEn: null, price: 9,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 1,
     needsReview: 'Appetizers show no photo (owner directive).',
@@ -148,7 +148,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'naan-afghan', category: 'entrees',
     nameFr: 'Naan Afghan', nameEn: 'Afghan Naan',
-    descFr: null, descEn: null, price: 1.1,
+    descFr: null, descEn: null, price: 1.75,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 2,
     needsReview: 'Appetizers show no photo (owner directive).',
@@ -156,29 +156,30 @@ export const MENU: MenuItem[] = [
   {
     id: 'ashak-entree', category: 'entrees',
     nameFr: 'Ashak', nameEn: 'Ashak',
-    descFr: null, descEn: null, price: 8.8,
+    descFr: null, descEn: null, price: 10,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 3,
   },
   {
     id: 'banjan-burani-entree', category: 'entrees',
     nameFr: 'Banjan Burani', nameEn: 'Banjan Burani',
-    descFr: null, descEn: null, price: 8.8,
+    descFr: null, descEn: null, price: 10,
     image: null, imageConfidence: null,
     available: true, featured: false, vegetarian: true, order: 4,
   },
   {
     id: 'qorma-poulet', category: 'entrees',
     nameFr: 'Qorma De Poulet', nameEn: 'Chicken Curry',
-    descFr: null, descEn: null, price: 8.8,
+    descFr: null, descEn: null, price: 10,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 5,
     needsReview: 'Appetizers show no photo (owner directive).',
   },
   {
     id: 'qorma-veau', category: 'entrees',
-    nameFr: 'Qorma De Veau', nameEn: 'Veal Curry',
-    descFr: null, descEn: null, price: 8.8,
+    // Owner's menu lists Qorma de BŒUF (no veal item); id kept for stability.
+    nameFr: 'Qorma De Bœuf', nameEn: 'Beef Curry',
+    descFr: null, descEn: null, price: 10,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 6,
     needsReview: 'Appetizers show no photo (owner directive).',
@@ -186,7 +187,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'salade-afghane', category: 'entrees',
     nameFr: 'Salade Afghane', nameEn: 'Afghan Salad',
-    descFr: null, descEn: null, price: 7.15,
+    descFr: null, descEn: null, price: 7.5,
     image: null, imageConfidence: null,
     available: true, featured: false, vegetarian: true, order: 7,
     needsReview: 'Appetizers show no photo (owner directive).',
@@ -194,14 +195,14 @@ export const MENU: MenuItem[] = [
   {
     id: 'mantu-entree', category: 'entrees',
     nameFr: 'Mantu', nameEn: 'Mantu',
-    descFr: null, descEn: null, price: 8.8,
+    descFr: null, descEn: null, price: 10,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 8,
   },
   {
     id: 'salade-maison', category: 'entrees',
     nameFr: 'Salade Maison', nameEn: 'Homemade Salad',
-    descFr: null, descEn: null, price: 5.5,
+    descFr: null, descEn: null, price: 6,
     image: null, imageConfidence: null,
     available: true, featured: false, vegetarian: true, order: 9,
     needsReview: 'Appetizers show no photo (owner directive).',
@@ -209,7 +210,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'soupe-lentilles', category: 'entrees',
     nameFr: 'Soupe Aux Lentilles', nameEn: 'Lentil Soup',
-    descFr: null, descEn: null, price: 5.0,
+    descFr: null, descEn: null, price: 6,
     image: null, imageConfidence: null,
     available: true, featured: false, vegetarian: true, order: 10,
     needsReview: 'Appetizers show no photo (owner directive).',
@@ -219,14 +220,14 @@ export const MENU: MenuItem[] = [
   {
     id: 'sultan-kabab', category: 'kababs',
     nameFr: 'Sultan Kabab', nameEn: 'Sultan Kabab',
-    descFr: null, descEn: null, price: 25.3,
+    descFr: null, descEn: null, price: 24,
     image: 'DSC09444', imageConfidence: 'high',
     available: true, featured: true, order: 1,
   },
   {
     id: 'mazar-kabab', category: 'kababs',
     nameFr: 'Mazar Kabab', nameEn: 'Mazar Kabab',
-    descFr: null, descEn: null, price: 23.1,
+    descFr: null, descEn: null, price: 23,
     image: 'DSC09448', imageConfidence: 'high',
     altImages: ['DSC09450', 'DSC09451', 'DSC09452'],
     available: true, featured: true, order: 2,
@@ -244,7 +245,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'barg-kabab', category: 'kababs',
     nameFr: 'Barg Kabab', nameEn: 'Barg Kabab',
-    descFr: null, descEn: null, price: 26.4,
+    descFr: null, descEn: null, price: 25,
     image: 'DSC09462', imageConfidence: 'high',
     altImages: ['DSC09462', 'DSC09464', 'DSC09465'],
     available: true, featured: false, order: 3,
@@ -252,7 +253,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'kobidah-boeuf', category: 'kababs',
     nameFr: 'Kobidah De Bœuf', nameEn: 'Kobidah Of Beef',
-    descFr: null, descEn: null, price: 19.8,
+    descFr: null, descEn: null, price: 20,
     image: 'DSC09456', imageConfidence: 'high',
     altImages: ['DSC09455', 'DSC09456', 'DSC09457'],
     available: true, featured: false, order: 4,
@@ -260,7 +261,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'kobidah-poulet', category: 'kababs',
     nameFr: 'Kobidah De Poulet', nameEn: 'Kobidah Of Chicken',
-    descFr: null, descEn: null, price: 19.8,
+    descFr: null, descEn: null, price: 20,
     image: 'DSC09459', imageConfidence: 'high',
     altImages: ['DSC09458', 'DSC09459', 'DSC09460'],
     available: true, featured: false, order: 5,
@@ -268,7 +269,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'kobidah-mixte', category: 'kababs',
     nameFr: 'Kobidah Mixte', nameEn: 'Mixed Kobidah',
-    descFr: null, descEn: null, price: 19.8,
+    descFr: null, descEn: null, price: 20,
     image: 'DSC09435', imageConfidence: 'high',
     altImages: ['DSC09434', 'DSC09436'],
     available: true, featured: false, order: 6,
@@ -276,7 +277,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'tikka-kabab', category: 'kababs',
     nameFr: 'Tikka Kabab', nameEn: 'Tikka Kabab',
-    descFr: null, descEn: null, price: 19.0,
+    descFr: null, descEn: null, price: 20,
     image: 'DSC09482', imageConfidence: 'high',
     altImages: ['DSC09466', 'DSC09468', 'DSC09469'],
     available: true, featured: false, order: 7,
@@ -284,15 +285,16 @@ export const MENU: MenuItem[] = [
   {
     id: 'tikka-agneau', category: 'kababs',
     nameFr: "Tikka D'agneau", nameEn: 'Lamb Tikka',
-    descFr: null, descEn: null, price: 22.0,
+    descFr: null, descEn: null, price: 0,
     image: 'DSC09480', imageConfidence: 'medium',
     altImages: ['DSC09479', 'DSC09481', 'DSC09482'],
-    available: true, featured: false, order: 8,
+    available: false, featured: false, order: 8,
+    needsReview: 'RETIRÉ du menu du propriétaire (carte 2026-10, non listé) — ancien prix 22 $. Masqué du site.',
   },
   {
     id: 'kabab-poulet', category: 'kababs',
     nameFr: 'Kabab Au Poulet', nameEn: 'Chicken Kebab',
-    descFr: null, descEn: null, price: 17.0,
+    descFr: null, descEn: null, price: 19,
     image: 'DSC09466', imageConfidence: 'high',
     altImages: ['DSC09447', 'DSC09448', 'DSC09449'],
     available: true, featured: false, order: 9,
@@ -316,7 +318,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'chaplee-kabab', category: 'kababs',
     nameFr: 'Chaplee Kabab', nameEn: 'Chaplee Kabab',
-    descFr: null, descEn: null, price: 19.8,
+    descFr: null, descEn: null, price: 19,
     image: 'DSC09473', imageConfidence: 'high',
     altImages: ['DSC09470', 'DSC09472', 'DSC09473'],
     available: true, featured: false, order: 12,
@@ -324,7 +326,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'cuisses-poulet', category: 'kababs',
     nameFr: 'Cuisses De Poulet (4x)', nameEn: 'Chicken Thighs (4x)',
-    descFr: null, descEn: null, price: 19.8,
+    descFr: null, descEn: null, price: 20,
     image: 'DSC09439', imageConfidence: 'high',
     altImages: ['DSC09437', 'DSC09438', 'DSC09439', 'DSC09440'],
     available: true, featured: false, order: 13,
@@ -332,7 +334,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'biryani-poulet', category: 'kababs',
     nameFr: 'Biryani Au Poulet', nameEn: 'Chicken Biryani',
-    descFr: null, descEn: null, price: 15.4,
+    descFr: null, descEn: null, price: 14,
     image: 'DSC09494', imageConfidence: 'high',
     altImages: ['DSC09493', 'DSC09494', 'DSC09495'],
     available: true, featured: false, order: 14,
@@ -340,7 +342,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'poisson-bassa', category: 'kababs',
     nameFr: 'Poisson Bassa', nameEn: 'Bassa Fish',
-    descFr: null, descEn: null, price: 16.5,
+    descFr: null, descEn: null, price: 17,
     image: 'DSC09497', imageConfidence: 'high',
     altImages: ['DSC09497', 'DSC09498', 'DSC09499'],
     available: true, featured: false, order: 15,
@@ -350,7 +352,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'sabzi-pulao', category: 'currys',
     nameFr: 'Sabzi Pulao', nameEn: 'Sabzi Pulao',
-    descFr: null, descEn: null, price: 16.5,
+    descFr: null, descEn: null, price: 17,
     image: 'DSC09542', imageConfidence: 'high',
     altImages: ['DSC09541', 'DSC09542', 'DSC09543'],
     available: true, featured: false, order: 1,
@@ -358,7 +360,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'kofta-pulao', category: 'currys',
     nameFr: 'Kofta Pulao', nameEn: 'Kofta Pulao',
-    descFr: null, descEn: null, price: 16.5,
+    descFr: null, descEn: null, price: 18,
     image: 'DSC09539', imageConfidence: 'high',
     altImages: ['DSC09525', 'DSC09526', 'DSC09527'],
     available: true, featured: false, order: 2,
@@ -366,7 +368,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'qorma-pulao', category: 'currys',
     nameFr: 'Qorma Pulao', nameEn: 'Qorma Pulao',
-    descFr: null, descEn: null, price: 17.6,
+    descFr: null, descEn: null, price: 18,
     image: 'DSC09526', imageConfidence: 'high',
     altImages: ['DSC09535'],
     available: true, featured: false, order: 3,
@@ -374,7 +376,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'mantu-plat', category: 'currys',
     nameFr: 'Mantu', nameEn: 'Mantu',
-    descFr: null, descEn: null, price: 18.7,
+    descFr: null, descEn: null, price: 19,
     image: 'DSC09515', imageConfidence: 'high',
     altImages: ['DSC09512', 'DSC09514', 'DSC09515'],
     available: true, featured: true, order: 4,
@@ -382,7 +384,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'ashak-plat', category: 'currys',
     nameFr: 'Ashak', nameEn: 'Ashak',
-    descFr: null, descEn: null, price: 18.7,
+    descFr: null, descEn: null, price: 19,
     image: 'DSC09521', imageConfidence: 'high',
     altImages: ['DSC09520', 'DSC09521', 'DSC09523'],
     available: true, featured: false, order: 5,
@@ -390,7 +392,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'banjan-burani-plat', category: 'currys',
     nameFr: 'Banjan Burani', nameEn: 'Banjan Burani',
-    descFr: null, descEn: null, price: 17.6,
+    descFr: null, descEn: null, price: 19,
     image: 'rice-banjan-burani', imageConfidence: 'high',
     altImages: ['DSC09504', 'DSC09505', 'DSC09507'],
     available: true, featured: false, vegetarian: true, order: 6,
@@ -398,7 +400,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'dopiaza', category: 'currys',
     nameFr: 'Dopiaza', nameEn: 'Dopiaza',
-    descFr: null, descEn: null, price: 18.7,
+    descFr: null, descEn: null, price: 19,
     image: 'DSC09528', imageConfidence: 'high',
     altImages: ['DSC09516', 'DSC09518', 'DSC09519'],
     available: true, featured: false, order: 7,
@@ -435,7 +437,7 @@ export const MENU: MenuItem[] = [
       'Pour 2 personnes : 1 kabab de poulet, 1 kobidah de bœuf, 1 tikka kabab et 1 kobidah de poulet.',
     descEn:
       'For 2: 1 chicken kabab, 1 beef kobidah, 1 tikka kabab and 1 chicken kobidah.',
-    price: 51.7,
+    price: 51,
     image: 'rice-combo-dostan', imageConfidence: 'high',
     available: true, featured: true, order: 1,
   },
@@ -447,7 +449,7 @@ export const MENU: MenuItem[] = [
       'Pour 4 personnes : 2 kobidah de bœuf, 1 kobidah de poulet, 2 chaplee, 3 chopan et 1 kabab de poulet.',
     descEn:
       'For 4: 2 beef kobidah, 1 chicken kobidah, 2 chaplee, 3 chopan and 1 chicken kabab.',
-    price: 104.5,
+    price: 100,
     image: 'rice-combo-naseeb', imageConfidence: 'high',
     available: true, featured: true, order: 2,
   },
@@ -459,7 +461,7 @@ export const MENU: MenuItem[] = [
       'Pour 6 personnes : 3 kobidah de bœuf, 3 kobidah de poulet, 2 tikka et 1 kabab de poulet, servi avec du riz et 4 morceaux de cuisse de poulet.',
     descEn:
       'For 6: 3 beef kobidah, 3 chicken kobidah, 2 tikka and 1 chicken kabab, served with rice and 4 chicken drumsticks.',
-    price: 161.7,
+    price: 155,
     image: 'rice-combo-watan', imageConfidence: 'high',
     available: true, featured: true, order: 3,
   },
@@ -468,7 +470,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'hamburger-fromage', category: 'burgers',
     nameFr: 'Hamburger Au Fromage', nameEn: 'Cheeseburger',
-    descFr: null, descEn: null, price: 14.24,
+    descFr: null, descEn: null, price: 13,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 1,
     needsReview:
@@ -477,7 +479,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'burger-poulet', category: 'burgers',
     nameFr: 'Burger Au Poulet', nameEn: 'Chicken Burger',
-    descFr: null, descEn: null, price: 14.24,
+    descFr: null, descEn: null, price: 13,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 2,
     needsReview:
@@ -486,7 +488,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'wrap-boeuf', category: 'burgers',
     nameFr: 'Wrap Au Bœuf', nameEn: 'Beef Wrap',
-    descFr: null, descEn: null, price: 15.4,
+    descFr: null, descEn: null, price: 14,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 3,
     needsReview: 'Burgers & wraps show no photo (owner directive).',
@@ -494,7 +496,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'wrap-poulet', category: 'burgers',
     nameFr: 'Wrap Au Poulet', nameEn: 'Chicken Wrap',
-    descFr: null, descEn: null, price: 15.4,
+    descFr: null, descEn: null, price: 14,
     image: null, imageConfidence: null,
     available: true, featured: false, order: 4,
     needsReview: 'Burgers & wraps show no photo (owner directive).',
@@ -502,17 +504,17 @@ export const MENU: MenuItem[] = [
   {
     id: 'wrap-agneau', category: 'burgers',
     nameFr: "Wrap À L'agneau", nameEn: 'Lamb Wrap',
-    descFr: null, descEn: null, price: 17.6,
+    descFr: null, descEn: null, price: 0,
     image: null, imageConfidence: null,
-    available: true, featured: false, order: 5,
-    needsReview: 'Burgers & wraps show no photo (owner directive).',
+    available: false, featured: false, order: 5,
+    needsReview: 'RETIRÉ du menu du propriétaire (carte 2026-10, non listé) — ancien prix 17,60 $. Masqué du site.',
   },
 
   // ─────────────────────────── DESSERTS ───────────────────────────
   {
     id: 'firni', category: 'desserts',
     nameFr: 'Firni', nameEn: 'Firni',
-    descFr: null, descEn: null, price: 4.4,
+    descFr: null, descEn: null, price: 5,
     image: 'DSC09547', imageConfidence: 'high',
     altImages: ['DSC09544', 'DSC09546', 'DSC09547'],
     available: true, featured: true, vegetarian: true, order: 1,
@@ -522,7 +524,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'the-afghan', category: 'boissons',
     nameFr: 'Thé Afghan', nameEn: 'Afghan Tea',
-    descFr: null, descEn: null, price: 2.19,
+    descFr: null, descEn: null, price: 1.99,
     image: null, imageConfidence: null,
     available: true, featured: false, vegetarian: true, order: 1,
     needsReview: 'Drinks show no photo.',
@@ -530,7 +532,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'dogh', category: 'boissons',
     nameFr: 'Dogh (Boisson Au Yaourt)', nameEn: 'Dogh (Yogurt Drink)',
-    descFr: null, descEn: null, price: 4.39,
+    descFr: null, descEn: null, price: 5,
     image: null, imageConfidence: null,
     available: true, featured: false, vegetarian: true, order: 2,
     needsReview: 'Drinks show no photo.',
@@ -538,7 +540,7 @@ export const MENU: MenuItem[] = [
   {
     id: 'soda', category: 'boissons',
     nameFr: 'Soda', nameEn: 'Soda',
-    descFr: null, descEn: null, price: 2.19,
+    descFr: null, descEn: null, price: 1.99,
     image: null, imageConfidence: null,
     available: true, featured: false, needsReview: 'Drinks show no photo.',
     order: 3,
@@ -546,10 +548,19 @@ export const MENU: MenuItem[] = [
   {
     id: 'eau', category: 'boissons',
     nameFr: "Bouteille D'eau", nameEn: 'Water Bottle',
-    descFr: null, descEn: null, price: 2.19,
+    descFr: null, descEn: null, price: 1.99,
     image: null, imageConfidence: null,
     available: true, featured: false, needsReview: 'Drinks show no photo.',
     order: 4,
+  },
+  {
+    id: 'jus', category: 'boissons',
+    nameFr: 'Jus', nameEn: 'Juice',
+    descFr: 'Orange ou pomme.', descEn: 'Orange or apple.',
+    price: 2.99,
+    image: null, imageConfidence: null,
+    available: true, featured: false, needsReview: 'Drinks show no photo.',
+    order: 5,
   },
 
   // ──────────────────────────── EXTRAS ────────────────────────────
@@ -559,6 +570,30 @@ export const MENU: MenuItem[] = [
     descFr: null, descEn: null, price: 7.0,
     image: 'card-frites', imageConfidence: 'medium',
     available: true, featured: false, vegetarian: true, order: 1,
+  },
+  {
+    id: 'riz', category: 'extras',
+    nameFr: 'Riz', nameEn: 'Rice',
+    descFr: null, descEn: null, price: 8,
+    image: null, imageConfidence: null,
+    available: true, featured: false, vegetarian: true, order: 2,
+    needsReview: 'Extras show no photo.',
+  },
+  {
+    id: 'sabzi', category: 'extras',
+    nameFr: 'Sabzi', nameEn: 'Sabzi',
+    descFr: null, descEn: null, price: 8,
+    image: null, imageConfidence: null,
+    available: true, featured: false, vegetarian: true, order: 3,
+    needsReview: 'Extras show no photo.',
+  },
+  {
+    id: 'qabuli', category: 'extras',
+    nameFr: 'Qabuli', nameEn: 'Qabuli',
+    descFr: null, descEn: null, price: 4,
+    image: null, imageConfidence: null,
+    available: true, featured: false, vegetarian: true, order: 4,
+    needsReview: 'Extras show no photo.',
   },
 ]
 
